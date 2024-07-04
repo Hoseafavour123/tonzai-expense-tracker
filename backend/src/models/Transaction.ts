@@ -9,6 +9,7 @@ export interface TransactionType {
   category: string
   description: string
   user: mongoose.Types.ObjectId | UserType
+ 
 }
 
 const transactionchema = new mongoose.Schema<TransactionType>(
@@ -47,6 +48,7 @@ const transactionchema = new mongoose.Schema<TransactionType>(
       ref: 'User',
       required: true,
     },
+   
   },
   { timestamps: true }
 )

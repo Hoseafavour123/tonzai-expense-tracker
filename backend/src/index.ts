@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use(cookieParser())
 
+
 //Routes
 app.use('/api/auth', authRoute)
 app.use('/api/v1/transactions', transactionsRoute)
