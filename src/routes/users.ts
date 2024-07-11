@@ -5,7 +5,6 @@ import User from '../models/User'
 
 const router = express.Router()
 
-
 router.get('/', async (req: Request, res: Response) => {
     try {
         const users = await User.find({}).limit(10)

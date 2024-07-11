@@ -6,7 +6,7 @@ import mongoose from 'mongoose'
 
 const router = express.Router()
 
-router.get('/all', verifyToken, async (req: Request, res: Response) => {
+router.get('/get-all-transactions', verifyToken, async (req: Request, res: Response) => {
   try {
     console.log(req.userId)
     const transactions = await Transaction.find({user: req.userId })
@@ -19,13 +19,26 @@ router.get('/all', verifyToken, async (req: Request, res: Response) => {
   }
 })
 
-router.get('/all/:type', verifyToken, async (req, res) => {
+// recent transactions
+router.get('/get-recent-transaction', verifyToken, async (req: Request, res: Response) => {
+  try {
+     const transactions = await Transaction.find({ user: req.userId }).limit(5).sort({ createdAt: -1 })
+       .populate({ path: 'user', select: '-password' })
+       .exec()
+     res.status(200).json({ transactions })
+  } catch (error) {
+    console.log(error)
+    res.status(200).json({ message: 'Something went wrong '})
+  }
+})
+
+// all income or expenses
+router.get('/get-all-transactions/:type', verifyToken, async (req, res) => {
   try {
     const transaction = await Transaction.find({
       user: req.userId,
-      type: req.params.type,
-    }).populate({ path: 'user', select: '-password' })
-
+      type: req.params.type
+    }).limit(5).sort({ createdAt : -1 }).populate({ path: 'user', select: '-password' }).exec()
     res.status(200).json({ transaction })
   } catch (error) {
     console.log(error)
@@ -34,7 +47,7 @@ router.get('/all/:type', verifyToken, async (req, res) => {
 })
 
 
-
+// get a single transaction
 router.get('/:id', verifyToken, async (req: Request, res: Response) => {
   try {
     const transaction = await Transaction.findById(req.params.id)
@@ -45,6 +58,8 @@ router.get('/:id', verifyToken, async (req: Request, res: Response) => {
   }
 })
 
+
+//create transaction
 router.post(
   '/create',
   [
@@ -90,10 +105,12 @@ router.post(
       res.status(200).json({ message: 'transaction saved.' })
     } catch (error) {
       console.log(error)
-      res.status(200).json({ message: 'transaction saved.' })
+      res.status(500).json({ message: 'Something went wrong' })
     }
   }
 )
+
+
 
 router.put('/:id', async(req: Request, res: Response) => {
   try {
