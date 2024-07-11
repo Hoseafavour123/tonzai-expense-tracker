@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/morgan": "^1.9.9",
     "@types/multer": "^1.4.11",
     "@types/react-query": "^1.2.9",
     "bcryptjs": "^2.4.3",
@@ -22,6 +23,7 @@
     "moment-timezone": "^0.5.45",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.3",
+    "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.14",
