@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
 export interface UserType {
-  name: String
+  name: string
   email: string
   password: string
 }

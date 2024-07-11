@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer'
 
 type MailOptionType = {
-  email: string
+  email: string | undefined
   subject: string
   html: string
 }
@@ -18,10 +18,11 @@ export const sendMail = async (options: MailOptionType) => {
     tls: { rejectUnauthorized: false },
   } as any)
   const mailOptions = {
-    from: `"Tonzai Expense Tracker " <hoseafavour123@gmail.com>`,
+    from: `"Tonzai Expense Tracker "`,
     to: options.email,
     subject: options.subject,
     html: options.html,
   }
   await transporter.sendMail(mailOptions)
 }
+
