@@ -30,7 +30,6 @@ const parseTime = (timeStr: string): string => {
   return `${cronMinute || 0} ${cronHour} * * *`
 }
 
-
 export const startReminderSchedule = ({ newReminder, email, name, time }: StartReminderProps) => {
   const cronTime = parseTime(time)
 
