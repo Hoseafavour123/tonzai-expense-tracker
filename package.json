@@ -33,6 +33,7 @@
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/express-validator": "^3.0.0",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/moment-timezone": "^0.5.30",
     "@types/morgan": "^1.9.9",
