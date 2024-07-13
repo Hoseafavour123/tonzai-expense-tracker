@@ -38,7 +38,7 @@ const server = async () => {
     .then(() => console.log('Connected to db.'))
     .catch((e) => console.log(e))
   recreateReminders()
-  app.listen(3000, () => console.log('App listening on port 7000'))
+  app.listen(3000, () => console.log('App listening on port 3000'))
 }
 
 server()
