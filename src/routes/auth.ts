@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import {check, validationResult } from 'express-validator'
 import verifyToken from '../middleware/auth'
-import { createOTPToken } from '../utils/createOTPtoken'
+import { createOTPToken } from '../utils/createOTPToken'
 import { generateOTP } from '../utils/generateOTP'
 import { sendMail } from '../utils/sendMail'
 
