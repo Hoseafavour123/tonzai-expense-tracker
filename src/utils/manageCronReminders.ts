@@ -1,12 +1,12 @@
 import cron from 'node-cron'
 import { CronReminderType } from '../models/CronReminder'
 import { sendMail } from './sendMail'
+
 import {
   addReminderObject,
   deleteReminderObject,
   getActiveReminders,
 } from './activeReminderObjects'
-
 
 type StartReminderProps = {
   newReminder: CronReminderType,
@@ -14,6 +14,7 @@ type StartReminderProps = {
   name: string | undefined,
   time: string
 }
+
 // parse time to valid cron time format
 const parseTime = (timeStr: string): string => {
   const [time, period] = timeStr.split(' ')

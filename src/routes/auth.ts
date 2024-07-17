@@ -7,6 +7,7 @@ import verifyToken from '../middleware/auth'
 import { createOTPToken } from '../utils/createOTPToken'
 import { generateOTP } from '../utils/generateOTP'
 import { sendMail } from '../utils/sendMail'
+import { generateAndSendReport } from '../utils/generateAndSendReport'
 
 
 type PayLoadType = {
@@ -49,7 +50,7 @@ router.post(
       }
 
       const otpToken = createOTPToken(userToConfirm)
-
+      
       try {
         await sendMail({
           email: userToConfirm.email,
@@ -132,6 +133,9 @@ router.post(
              expiresIn: '1d',
            }
          )
+
+         //schedule income/expense report
+         generateAndSendReport(newUser._id)
          res.cookie('auth_token', token, {
            httpOnly: true,
            secure: process.env.NODE_ENV === 'production',
@@ -174,6 +178,7 @@ router.post(
         process.env.JWT_SECRET as string,
         { expiresIn: '1d' }
       )
+      //generateAndSendReport(user._id)
       res.cookie('auth_token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',

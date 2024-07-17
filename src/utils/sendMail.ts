@@ -4,6 +4,12 @@ type MailOptionType = {
   email: string | undefined
   subject: string
   html: string
+  attachments?: [
+    {
+      filename: string,
+      path: string
+    }
+  ]
 }
 
 export const sendMail = async (options: MailOptionType) => {
@@ -16,12 +22,19 @@ export const sendMail = async (options: MailOptionType) => {
       pass: process.env.MAIL_PASSWORD,
     },
     tls: { rejectUnauthorized: false },
+
   } as any)
   const mailOptions = {
     from: `"Tonzai Expense Tracker "`,
     to: options.email,
     subject: options.subject,
     html: options.html,
+    attachments: [
+      {
+        filename: options && options.attachments && options.attachments[0].filename,
+        path: options && options.attachments && options.attachments[0].path
+      }
+    ]
   }
   await transporter.sendMail(mailOptions)
 }

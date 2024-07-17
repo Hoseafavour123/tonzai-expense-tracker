@@ -5,3 +5,4 @@ export const generateOTP = (length = 6) => {
     result += chars[Math.floor(Math.random() * chars.length)]
   return result
 }
+
