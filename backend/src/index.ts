@@ -1,5 +1,6 @@
-import express from 'express'
+import express, { Request, Response} from 'express'
 import cors from 'cors'
+import path from 'path'
 import 'dotenv/config'
 import authRoute from './routes/auth'
 import transactionsRoute from './routes/transactions'
@@ -16,20 +17,22 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL as string],
+    origin: [process.env.FRONTEND_URL as string, process.env.PRODUCTION_URL  as string],
     credentials: true,
   })
 )
 
+app.use(express.static(path.join(__dirname, '../../frontend/dist')))
+
 app.use(morgan('dev'))
-app.use('/api/auth', authRoute)
+app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/transactions', transactionsRoute)
 app.use('/api/v1/users', usersRoute)
 app.use('/api/v1/reminders', reminderRoute)
 
 
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'Hello from express endpoint ' })
+app.use('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname+'/../../frontend/dist/index.html'))
 })
 
 const server = async () => {

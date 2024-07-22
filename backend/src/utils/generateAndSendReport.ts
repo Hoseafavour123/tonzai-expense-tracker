@@ -18,6 +18,7 @@ export const generateAndSendReport = async (
     const user = await User.findById(userId)
     const transactions = await Transaction.find({
       date: { $gte: startDate.toDate(), $lte: endDate.toDate() },
+      user: user?.id,
     })
 
     let totalIncome = 0
@@ -36,7 +37,7 @@ export const generateAndSendReport = async (
     })
 
     const doc = new PDFDocument()
-    const pdfpath = `weekly_report_${startDate.format(
+    const pdfpath= `weekly_report_${startDate.format(
       'YYYY-MM-DD'
     )}_to_${endDate.format('YYYY-MM-DD')}.pdf`
 
@@ -55,7 +56,9 @@ export const generateAndSendReport = async (
     doc
       .fontSize(15)
       .text(
-        `Date Range: ${moment(startDate).format('DD MMMM YYYY')} - ${moment(endDate).format('DD MMMM YYYY')}`,
+        `Date Range: ${moment(startDate).format('DD MMMM YYYY')} - ${moment(
+          endDate
+        ).format('DD MMMM YYYY')}`,
         { align: 'center' }
       )
     doc.moveDown(3)
@@ -85,7 +88,11 @@ export const generateAndSendReport = async (
       doc
         .fontSize(12)
         .fillColor('green')
-        .text(`${idx + 1}. ${moment(income.date).format('DD MMMM YYYY')} - ${income.description} - $${income.amount}`)
+        .text(
+          `${idx + 1}. ${moment(income.date).format('DD MMMM YYYY')} - ${
+            income.description
+          } - $${income.amount}`
+        )
       doc.moveDown()
     })
 
@@ -98,26 +105,45 @@ export const generateAndSendReport = async (
       doc
         .fontSize(12)
         .fillColor('red')
-        .text(`${idx + 1}. ${moment(expense.date).format('DD MMMM YYYY')} - ${expense.description} - $${expense.amount}`)
+        .text(
+          `${idx + 1}. ${moment(expense.date).format('DD MMMM YYYY')} - ${
+            expense.description
+          } - $${expense.amount}`
+        )
       doc.moveDown()
     })
+    doc.moveDown()
+    doc
+      .fillColor('black').fontSize(12)
+      .text(
+        `${
+          totalExpenses > totalIncome
+            ? 'You spent way more than you earned this week. Make better financial decisions and cut down your expenses'
+            : 'Your income for the week was more than your expenses, keep up making wiser financial decisions'
+        }`
+      )
 
     doc.end()
-
-    cron.schedule('0 23 * * 6', () => {
+    cron.schedule('9 21 * * *', () => {
       sendMail({
         email: user?.email,
         subject: 'Weekly Income/Expense Report',
         html: `<p>Hello ${user?.name}! Find attached to this mail your income/expenses report for the week.</p>`,
-        attachments: [{
-          filename: pdfpath,
-          path: pdfpath
-        }]
+        attachments: [
+          {
+            filename: pdfpath,
+            path: pdfpath
+          },
+        ],
       })
     })
-
-    //fs.unlinkSync(pdfpath)
+    fs.unlink(pdfpath, (err) => {
+      if (err) {
+        console.log('Error deleting pdf: ', err)
+      }
+    })
   } catch (error) {
     console.log(error)
+    return
   }
 }
