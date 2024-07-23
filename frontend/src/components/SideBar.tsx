@@ -1,36 +1,51 @@
-import { Sidebar } from 'flowbite-react'
-import { BiBuoy } from 'react-icons/bi'
-import { HiArrowSmRight, HiChartPie, HiTable } from 'react-icons/hi'
+import {FaMoneyBillAlt, FaMoneyCheckAlt, FaCog, FaCrown, FaSignOutAlt} from 'react-icons/fa'
+import { IoMdAnalytics } from 'react-icons/io'
+import { Link } from 'react-router-dom'
 
-const SideBar = () => {
+type props = {
+  sideBarToggle: boolean
+}
+
+const SideBar = ({ sideBarToggle }: props) => {
   return (
-    <Sidebar
-      aria-label="Sidebar with content separator example"
-      className="bottom-0 shadow-md rounded-lg"
+    <aside
+      className={`${
+        sideBarToggle ? '-translate-x-full ' : 'translate-x-0'
+      } min-h-screen bg-white w-[300px] transition-all ease-in-out fixed -mt-3 z-50`}
     >
-      <Sidebar.Items>
-        <Sidebar.ItemGroup className="flex flex-col gap-5 text-xl h-full">
-          <Sidebar.Item href="#" icon={HiChartPie} className="text-2xl mt-5">
-            Dashboard
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiArrowSmRight} className="text-2xl">
-            Income
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiTable} className="text-2xl">
-            Expenses
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiTable} className="text-2xl">
-            Budget
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiTable} className="text-2xl">
-            History
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiTable} className="text-2xl">
-            Settings
-          </Sidebar.Item>
-        </Sidebar.ItemGroup>
-      </Sidebar.Items>
-    </Sidebar>
+      <div className="flex flex-col gap-4 p-3">
+        <ul className="flex flex-col gap-4 text-xl">
+          <li className="hover:bg-gray-50 flex items-center gap-2 p-1">
+            <IoMdAnalytics className="h-6 w-6" />
+            <Link to={'/dashboard'}>Dashboard</Link>
+          </li>
+          <li className=" hover:bg-gray-50 flex items-center gap-2 p-1">
+            <FaMoneyBillAlt className="h-6 w-6" />
+            <Link to={'/log-income'}>Income</Link>
+          </li>
+          <li className=" hover:bg-gray-50 flex items-center gap-2 p-1">
+            <FaMoneyCheckAlt className="h-6 w-6" />
+            <Link to={'/log-expenes'}>Expenses</Link>
+          </li>
+        </ul>
+
+        <div className="border-t-2 hover:bg-gray-50 p-1 mt-5 flex items-center gap-3 cursor-pointer">
+          <FaCrown className="h-6 w-6 text-purple-500" />
+          <p className="text-xl ">Go Premium</p>
+        </div>
+
+        <ul className="flex flex-col gap-4 text-xl border-t-2 mt-5">
+          <li className=" hover:bg-gray-50 flex items-center gap-2 p-1 mt-1">
+            <FaCog className='h-6 w-6'/>
+            <Link to={'/settings'}>Settings</Link>
+          </li>
+          <li className="hover:bg-gray-50 flex items-center gap-2 mt-5 p-1">
+            <FaSignOutAlt className='h-6 w-6'/>
+            <Link to={'/logout'}>Logout</Link>
+          </li>
+        </ul>
+      </div>
+    </aside>
   )
 }
 

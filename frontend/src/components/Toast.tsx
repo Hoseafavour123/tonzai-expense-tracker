@@ -7,9 +7,6 @@ type ToastProps = {
   onClose: () => void
 }
 
-import { Toast } from "flowbite-react"
-import { HiFire } from 'react-icons/hi'
-
 const ToastComponent = ({message, type, onClose}: ToastProps) => {
 
     useEffect(() => {
@@ -21,15 +18,17 @@ const ToastComponent = ({message, type, onClose}: ToastProps) => {
       }
     }, [onClose])
 
-  return (
-    <Toast>
-      <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan-100 text-cyan-500 dark:bg-cyan-800 dark:text-cyan-200">
-        <HiFire className="h-5 w-5" />
-      </div>
-      <div className={`ml-3 text-white text-2xl font-normal ${type === 'ERROR' ? 'bg-red-500' : 'bg-green-400'}`}>{message}</div>
-      <Toast.Toggle />
-    </Toast>
-  )
+   const styles =
+     type === 'SUCCESS'
+       ? 'fixed top-4 right-20 z-50 pl-4 pr-4 pt-1 pb-1 rounded-md bg-green-600 text-white'
+       : 'fixed top-4 right-20 z-50 pl-4 pr-4 pt-1 pb-1 rounded-md bg-red-600 text-white'
+   return (
+     <div className={styles}>
+       <div className="flex justify-center items-center">
+         <span className="text-lg font-semibold">{message}</span>
+       </div>
+     </div>
+   )
 }
 
 export default ToastComponent

@@ -1,9 +1,44 @@
-import { Activation } from "./pages/Activation"
-import { LoginFormData } from "./pages/Login"
-import { RegisterFormData } from "./pages/Register"
+import { Activation } from './pages/Activation'
+import { LoginFormData } from './pages/Login'
+import { RegisterFormData } from './pages/Register'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 
+type previousSummary = {
+  totalPrevIncome: number
+  totalPrevExpenses: number
+  prevNetIncome: number
+}
+
+interface TransactionSummaryType {
+  totalIncome: number
+  totalExpenses: number
+  netIncome: number
+  period: string
+  previousSummary: previousSummary
+}
+
+export interface TransactionType {
+  title: string
+  amount: number
+  type: string
+  date: Date
+  category: string
+  description: string
+  user: string
+  createdAt: Date
+ 
+}
+
+export interface AllTransactionType {
+  income: TransactionType[],
+  expenses: TransactionType[]
+}
+
+export interface TopTransactionsType {
+  type: string
+  topTransactions: { amount: number, category: string }[]
+}
 
 
 export const register = async (formData: RegisterFormData) => {
@@ -39,7 +74,6 @@ export const activation = async (otpString: Activation) => {
   }
 }
 
-
 export const validateToken = async () => {
   const response = await fetch(`${API_BASE_URL}/api/v1/auth/validate-token`, {
     credentials: 'include',
@@ -48,9 +82,6 @@ export const validateToken = async () => {
     throw new Error('Token invalid')
   }
 }
-
-
-
 
 export const logout = async () => {
   const response = await fetch(`${API_BASE_URL}/api/v1/auth/logout`, {
@@ -77,4 +108,61 @@ export const login = async (formData: LoginFormData) => {
     throw new Error(body.message)
   }
   return body
+}
+
+export const getTransactionSummary = async (
+  period: string
+): Promise<TransactionSummaryType> => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/v1/transactions/transactions-summary/${period}`,
+    {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+
+  if (!response.ok) {
+    throw new Error('Error fetching Transactions')
+  }
+
+  return response.json()
+}
+
+export const getRecentTransactions = async () : Promise<TransactionType[]> => {
+  const response = await fetch(`${API_BASE_URL}/api/v1/transactions/recent`, {
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    throw new Error('Error fetching Transactions')
+  }
+
+  return response.json()
+}
+
+
+export const getTransactions = async (): Promise<AllTransactionType> => {
+  const response = await fetch(`${API_BASE_URL}/api/v1/transactions`, {
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    throw new Error('Error fetching Transactions')
+  }
+
+  return response.json()
+}
+
+export const getTopTransactions = async () : Promise<TopTransactionsType[]> => {
+  const response = await fetch(`${API_BASE_URL}/api/v1/transactions/top-income-and-expenses`, {
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    throw new Error('Error fetching Transactions')
+  }
+
+  return response.json()
 }

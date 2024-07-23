@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 
-body {
-    background: #f0f0f0;
+@layer base {
+    html {
+        @apply bg-bgcol text-lg;
+    }
+
+    .container {
+        @apply p-0 m-0 w-full absolute left-0 right-0 top-0 min-w-full h-16;
+    }
+    .bg-gray-50 {
+        background-color: white;
+    }
 }
