@@ -7,6 +7,7 @@ import Activation from './pages/Activation'
 import SideBar from './components/SideBar'
 import { useState } from 'react'
 import Header from './components/Header'
+import LogIncome from './pages/LogIncome'
 
 function App() {
   const { isLoggedIn } = useAppContext()
@@ -31,7 +32,7 @@ function App() {
       </div>
 
       <Routes>
-       {/* {!isLoggedIn && (
+        {/* {!isLoggedIn && (
           <Route
             path="/dashboard"
             element={<Dashboard sideBarToggle={sideBarToggle} />}
@@ -41,6 +42,7 @@ function App() {
           path="/dashboard"
           element={<Dashboard sideBarToggle={sideBarToggle} />}
         ></Route>
+        <Route path="/dashboard/income" element={<LogIncome  sideBarToggle={sideBarToggle}/>} />
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/activation" element={<Activation />} />

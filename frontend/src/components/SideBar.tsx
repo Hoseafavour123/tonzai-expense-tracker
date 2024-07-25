@@ -46,11 +46,11 @@ const handleClick = () => {
           </li>
           <li className=" hover:bg-gray-50 flex items-center gap-2 p-1">
             <FaMoneyBillAlt className="h-6 w-6" />
-            <Link to={'/log-income'}>Income</Link>
+            <Link to={'/dashboard/income'}>Income</Link>
           </li>
           <li className=" hover:bg-gray-50 flex items-center gap-2 p-1">
             <FaMoneyCheckAlt className="h-6 w-6" />
-            <Link to={'/log-expenes'}>Expenses</Link>
+            <Link to={'/dashboard/expenses'}>Expenses</Link>
           </li>
         </ul>
 

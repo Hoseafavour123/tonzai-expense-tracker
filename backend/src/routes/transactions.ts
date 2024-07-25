@@ -7,7 +7,6 @@ import mongoose from 'mongoose'
 import { ObjectId } from 'mongodb'
 import moment from 'moment'
 
-
 const router = express.Router()
 
 export interface TopTransactionsType {
@@ -184,7 +183,10 @@ router.get(
       const topTransactions: TopTransactionsType[] =
         await Transaction.aggregate([
           {
-            $match: { type: { $in: ['income', 'expenses'] }, user: new ObjectId(req.userId) },
+            $match: {
+              type: { $in: ['income', 'expenses'] },
+              user: new ObjectId(req.userId),
+            },
           },
           {
             $sort: { amount: -1 },

@@ -8,8 +8,8 @@ type prop = {
 
 const Card = ({ iconImg, title, amount, period, avgDaily }: prop) => {
   return (
-    <div className="bg-white p-4 shadow-md rounded-md ">
-      <h1 className="text-2xl text-black mb-2">
+    <div className="bg-white p-4 shadow-md rounded-md">
+      <h1 className="md:text-2xl sm:text-xl text-black mb-2">
         {title}<small className="text-xs text-gray-500"> /{period}</small>
       </h1>
       <div className="flex gap-3 items-center">
@@ -17,7 +17,7 @@ const Card = ({ iconImg, title, amount, period, avgDaily }: prop) => {
           <img src={iconImg.src} alt={iconImg.alt} width={24} height={22} />
         </div>
         <div className="flex flex-col items-center">
-          <h1 className="text-4xl text-black font-bold">${amount}</h1>
+          <h1 className="md:text-4xl sm:text-3xl text-black font-bold">${amount}</h1>
           <small className={`text-${avgDaily?.color}-500 font-bold`}> {avgDaily?.percent}% </small>
         </div>
       </div>

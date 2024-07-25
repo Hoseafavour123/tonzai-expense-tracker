@@ -108,15 +108,15 @@ const Dashboard = ({ sideBarToggle }: prop) => {
   return (
     <div
       className={`${
-        sideBarToggle ? 'm-5' : 'md:ml-[310px]'
+        sideBarToggle ? 'ml-3' : 'md:ml-[310px]'
       } min-h-screen mt-20 mb-20`}
     >
       <div>
-        <h1 className="text-3xl mb-3">Dashboard</h1>
+        <h1 className="md:text-3xl mb-3 sm:text-2xl ">Dashboard</h1>
       </div>
 
-      <div className="grid lg:grid-cols-5 lg:grid-rows-5 gap-5 text-white m-3 sm:grid-cols-1 md:grid-cols-2 items-center">
-        <div className="sm:w-[350px] md:w-full">
+      <div className="grid lg:grid-cols-5 lg:grid-rows-5 gap-5 text-white sm:grid-cols-1 md:grid-cols-2 items-start ">
+        <div className="sm:w-[350px] md:w-full max-lg:mr-3">
           <Card
             amount={transactionSummary?.totalIncome}
             period={transactionSummary?.period}
@@ -141,7 +141,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           />
         </div>
 
-        <div className="sm:w-[350px] md:w-full">
+        <div className="sm:w-[350px] md:w-full max-lg:mr-3 ">
           <Card
             amount={transactionSummary?.totalExpenses}
             period={transactionSummary?.period}
@@ -163,7 +163,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           />
         </div>
 
-        <div className="sm:w-[350px] md:w-full">
+        <div className="sm:w-[350px] md:w-full max-lg:mr-3">
           <Card
             amount={transactionSummary?.netIncome}
             period={transactionSummary?.period}
@@ -176,11 +176,13 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           />
         </div>
 
-        <div className="lg:col-span-2 lg:row-span-2 p-4 bg-white h-full w-full shadow-md rounded-md sm:row-span-2 sm:col-span-2 sm:w-full max-lg:w-[350px]">
-          <h1 className="text-2xl text-black">Recent transactions</h1>
+        <div className="lg:col-span-2 lg:row-span-2 p-4 bg-white h-full w-full shadow-md rounded-md sm:row-span-2 sm:col-span-2 sm:w-full max-lg:w-[335px]">
+          <h1 className="md:text-2xl sm:text-xl text-black">
+            Recent transactions
+          </h1>
           <ol className="flex flex-col space-y-4 text-black mt-3 overflow-y-auto p-2">
             {recentTransactions?.map((transaction, idx) => (
-              <li className="font-semi text-xl shadow rounded-xl p-1">
+              <li className="font-semi md:text-xl sm:text-sm shadow rounded-xl p-1">
                 <small className="text-gray-400 text-xs inline">
                   {idx + 1}.{' '}
                   {moment(transaction.createdAt).format('MMMM D, YYYY')}
@@ -201,7 +203,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           </ol>
         </div>
 
-        <div className="lg:col-span-3 lg:row-span-3 lg:h-full lg:w-full bg-white md:col-span-2 md:row-span-1 sm:col-span-1 sm:row-span-1 max-lg:w-[350px] max-lg:h-[250px] md:h-full md:w-full">
+        <div className="lg:col-span-3 lg:row-span-3 lg:h-full lg:w-full bg-white md:col-span-2 md:row-span-1 sm:col-span-1 sm:row-span-1 max-lg:w-[335px] max-lg:h-[280px] md:h-full md:w-full">
           <Chart
             data={data}
             selectedType={selectedType}
@@ -209,8 +211,8 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           />
         </div>
 
-        <div className="lg:col-span-2 lg:row-span-3 lg:col-start-4 lg:row-start-3 lg:row-end-5 md:col-span-2 h-full w-full bg-white shadow-md">
-          <h1 className="text-3xl font-bold text-center text-black mt-3">
+        <div className="lg:col-span-2 lg:row-span-3 lg:col-start-4 lg:row-start-3 lg:row-end-5 md:col-span-2 h-full w-full bg-white shadow-md max-lg:w-[335px]">
+          <h1 className="md:text-2xl sm:text-xl font-bold text-center text-black mt-3">
             Top Categories
           </h1>
           <div className="flex justify-around p-1 flex-row-reverse md:flex- sm:flex-col">
