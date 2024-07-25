@@ -13,15 +13,34 @@ function App() {
   const [sideBarToggle, setSideBarToggle] = useState<boolean>(false)
   return (
     <BrowserRouter>
-      <div className=''>
-        <Header sideBarToggle={sideBarToggle} setSideBarToggle={setSideBarToggle}/>
+      {/*} {!isLoggedIn && (
+        <div className="">
+          <Header
+            sideBarToggle={sideBarToggle}
+            setSideBarToggle={setSideBarToggle}
+          />
+          <SideBar sideBarToggle={sideBarToggle} />
+        </div>
+      )}*/}
+      <div className="">
+        <Header
+          sideBarToggle={sideBarToggle}
+          setSideBarToggle={setSideBarToggle}
+        />
         <SideBar sideBarToggle={sideBarToggle} />
       </div>
+
       <Routes>
-        {/*{isLoggedIn && (
-          <Route path="/dashboard" element={<Dashboard />}></Route>
+       {/* {!isLoggedIn && (
+          <Route
+            path="/dashboard"
+            element={<Dashboard sideBarToggle={sideBarToggle} />}
+          ></Route>
         )}*/}
-        <Route path="/dashboard" element={<Dashboard sideBarToggle={sideBarToggle}/>}></Route>
+        <Route
+          path="/dashboard"
+          element={<Dashboard sideBarToggle={sideBarToggle} />}
+        ></Route>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/activation" element={<Activation />} />

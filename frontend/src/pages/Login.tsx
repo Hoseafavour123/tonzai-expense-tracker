@@ -36,9 +36,6 @@ const Login = () => {
     mutate(data)
   })
 
-  if (isLoading) {
-    return <Loader />
-  }
   return (
     <div className="min-h-screen mt-20 p-4">
       <div className="flex max-w-4xl mx-auto flex-col md:flex-row md:items-center max-lg:p-3 shadow-lg bg-white rounded-xl">
@@ -91,8 +88,9 @@ const Login = () => {
               outline
               gradientDuoTone="pinkToOrange"
               className="whitespace-nowrap text-bold text-xl mx-auto w-full mt-4"
+              disabled = {isLoading}
             >
-              Login
+              { isLoading ? 'Processing...' : 'Login'}
             </Button>
             <p className="tex-xl mt-3 mb-5">
               Not a member?{' '}

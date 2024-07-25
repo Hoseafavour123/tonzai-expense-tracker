@@ -25,7 +25,7 @@ export const sendMail = async (options: MailOptionType) => {
 
   } as any)
   const mailOptions = {
-    from: `"Tonzai Expense Tracker "`,
+    from: `"Tonzai Expense Tracker"`,
     to: options.email,
     subject: options.subject,
     html: options.html,

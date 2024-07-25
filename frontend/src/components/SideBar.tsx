@@ -1,12 +1,37 @@
 import {FaMoneyBillAlt, FaMoneyCheckAlt, FaCog, FaCrown, FaSignOutAlt} from 'react-icons/fa'
 import { IoMdAnalytics } from 'react-icons/io'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import * as apiClient from '../api-client'
+import { useMutation, useQueryClient } from 'react-query'
+import { useAppContext } from '../context/AppContext'
 
 type props = {
   sideBarToggle: boolean
 }
 
+
+
 const SideBar = ({ sideBarToggle }: props) => {
+  const queryClient = useQueryClient()
+  const { showToast } = useAppContext()
+  const navigate = useNavigate()
+
+const mutation = useMutation(apiClient.logout, {
+  onSuccess: async () => {
+    await queryClient.invalidateQueries('validateToken')
+    showToast({ message: 'Logged Out', type: 'SUCCESS' })
+    navigate('/login')
+  },
+  onError: (error: Error) => {
+    showToast({ message: error.message, type: 'ERROR' })
+  },
+})
+
+const handleClick = () => {
+  mutation.mutate()
+}
+
+
   return (
     <aside
       className={`${
@@ -39,10 +64,10 @@ const SideBar = ({ sideBarToggle }: props) => {
             <FaCog className='h-6 w-6'/>
             <Link to={'/settings'}>Settings</Link>
           </li>
-          <li className="hover:bg-gray-50 flex items-center gap-2 mt-5 p-1">
+          <button onClick={handleClick} className="hover:bg-gray-50 flex items-center gap-2 mt-5 p-1">
             <FaSignOutAlt className='h-6 w-6'/>
             <Link to={'/logout'}>Logout</Link>
-          </li>
+          </button>
         </ul>
       </div>
     </aside>

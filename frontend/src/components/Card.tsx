@@ -8,7 +8,7 @@ type prop = {
 
 const Card = ({ iconImg, title, amount, period, avgDaily }: prop) => {
   return (
-    <div className="bg-white p-4 shadow-md rounded-md">
+    <div className="bg-white p-4 shadow-md rounded-md ">
       <h1 className="text-2xl text-black mb-2">
         {title}<small className="text-xs text-gray-500"> /{period}</small>
       </h1>

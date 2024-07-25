@@ -4,7 +4,9 @@ import { body, check, validationResult } from 'express-validator'
 import Transaction, { TransactionType } from '../models/Transaction'
 import User from '../models/User'
 import mongoose from 'mongoose'
+import { ObjectId } from 'mongodb'
 import moment from 'moment'
+
 
 const router = express.Router()
 
@@ -182,7 +184,7 @@ router.get(
       const topTransactions: TopTransactionsType[] =
         await Transaction.aggregate([
           {
-            $match: { type: { $in: ['income', 'expenses'] } },
+            $match: { type: { $in: ['income', 'expenses'] }, user: new ObjectId(req.userId) },
           },
           {
             $sort: { amount: -1 },
@@ -232,6 +234,7 @@ router.get(
               },
             },
           },
+
           {
             $project: {
               type: 1,

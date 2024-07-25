@@ -49,8 +49,8 @@ const Chart = ({ data, selectedType, setSelectedType }: ChartProps) => {
   return (
     <div>
       <div className='flex gap-3 p-3'>
-        <button className='bg-green-500 hover:opacity-50 p-2 rounded-2xl text-white font-semibold text-sm' onClick={() => setSelectedType('income')}>Show Income</button>
-        <button className='bg-red-500 hover:opacity-50 p-2 rounded-2xl text-white font-semiold text-sm' onClick={() => setSelectedType('expenses')}>
+        <button className='bg-green-500 hover:opacity-50 p-2 rounded-2xl text-white font-semibold text-sm max-lg:h-9' onClick={() => setSelectedType('income')}>Show Income</button>
+        <button className='bg-red-500 hover:opacity-50 p-2 rounded-2xl text-white font-semiold text-sm max-lg:h-9' onClick={() => setSelectedType('expenses')}>
           Show Expenses
         </button>
       </div>

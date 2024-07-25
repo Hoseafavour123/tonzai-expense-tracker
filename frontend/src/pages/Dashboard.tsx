@@ -73,10 +73,20 @@ const Dashboard = ({ sideBarToggle }: prop) => {
     }
   )
 
-  const { data: transactions } = useQuery(
+  const { data: topTransactions } = useQuery(
+    'getTopTransactions',
+    apiClient.getTopTransactions,
+    {
+      onSuccess: () => {
+        console.log(topTransactions, 'tops')
+      },
+    }
+  )
+
+  const { data: transactions } = useQuery( 
     [
       'getTransactions',
-      { selectedType, data, transactionSummary, recentTransactions },
+      { selectedType, data, transactionSummary, recentTransactions, topTransactions },
     ],
     apiClient.getTransactions,
     {
@@ -89,15 +99,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
     }
   )
 
-  const { data: topTransactions } = useQuery(
-    'getTopTransactions',
-    apiClient.getTopTransactions,
-    {
-      onSuccess: () => {
-        console.log(topTransactions)
-      }
-    }
-  )
+  
 
   if (isLoading) {
     ;<Loader />
@@ -113,8 +115,8 @@ const Dashboard = ({ sideBarToggle }: prop) => {
         <h1 className="text-3xl mb-3">Dashboard</h1>
       </div>
 
-      <div className="grid grid-cols-5 grid-rows-5  gap-5 text-white m-3">
-        <div className="">
+      <div className="grid lg:grid-cols-5 lg:grid-rows-5 gap-5 text-white m-3 sm:grid-cols-1 md:grid-cols-2 items-center">
+        <div className="sm:w-[350px] md:w-full">
           <Card
             amount={transactionSummary?.totalIncome}
             period={transactionSummary?.period}
@@ -139,7 +141,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           />
         </div>
 
-        <div className="">
+        <div className="sm:w-[350px] md:w-full">
           <Card
             amount={transactionSummary?.totalExpenses}
             period={transactionSummary?.period}
@@ -161,7 +163,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           />
         </div>
 
-        <div className="">
+        <div className="sm:w-[350px] md:w-full">
           <Card
             amount={transactionSummary?.netIncome}
             period={transactionSummary?.period}
@@ -174,7 +176,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           />
         </div>
 
-        <div className="col-span-2 row-span-2 p-4 bg-white h-full w-full shadow-md rounded-md">
+        <div className="lg:col-span-2 lg:row-span-2 p-4 bg-white h-full w-full shadow-md rounded-md sm:row-span-2 sm:col-span-2 sm:w-full max-lg:w-[350px]">
           <h1 className="text-2xl text-black">Recent transactions</h1>
           <ol className="flex flex-col space-y-4 text-black mt-3 overflow-y-auto p-2">
             {recentTransactions?.map((transaction, idx) => (
@@ -188,7 +190,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
                     transaction.type === 'income'
                       ? 'text-green-500'
                       : 'text-red-500'
-                  } ml-3`}
+                  } ml-3 max-lg:text-sm`}
                 >
                   {' '}
                   {transaction.category} - {transaction.description}- $
@@ -199,7 +201,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           </ol>
         </div>
 
-        <div className="col-span-3 row-span-3 h-full w-full bg-white">
+        <div className="lg:col-span-3 lg:row-span-3 lg:h-full lg:w-full bg-white md:col-span-2 md:row-span-1 sm:col-span-1 sm:row-span-1 max-lg:w-[350px] max-lg:h-[250px] md:h-full md:w-full">
           <Chart
             data={data}
             selectedType={selectedType}
@@ -207,11 +209,11 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           />
         </div>
 
-        <div className="col-span-2 row-span-3 col-start-4 row-start-3 row-end-5 h-full w-full bg-white shadow-md">
+        <div className="lg:col-span-2 lg:row-span-3 lg:col-start-4 lg:row-start-3 lg:row-end-5 md:col-span-2 h-full w-full bg-white shadow-md">
           <h1 className="text-3xl font-bold text-center text-black mt-3">
             Top Categories
           </h1>
-          <div className="flex justify-around p-1 flex-row-reverse">
+          <div className="flex justify-around p-1 flex-row-reverse md:flex- sm:flex-col">
             {topTransactions &&
               topTransactions.map((transaction) => (
                 <div
@@ -219,13 +221,13 @@ const Dashboard = ({ sideBarToggle }: prop) => {
                     transaction.type === 'income'
                       ? 'text-green-500'
                       : 'text-red-500'
-                  } text-black space-y-3 p-1`}
+                  } text-black space-y-3 p-1 max-lg:p-2`}
                 >
                   <h1 className="text-2xl font-bold">{transaction.type}</h1>
                   {transaction.topTransactions.map((tran, idx) => (
                     <p>
                       {' '}
-                      {idx + 1}. {tran.category} - {tran.amount}{' '}
+                      {idx + 1}. {tran.category} - ${tran.amount}{' '}
                     </p>
                   ))}
                 </div>
