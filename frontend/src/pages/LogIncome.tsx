@@ -80,7 +80,7 @@ const LogIncome = ({ sideBarToggle }: prop) => {
         </h1>
       </div>
 
-      <div className="grid gap-2  mt-5 grid-cols-3 grid-rows-3 max-lg:grid-cols-1 max-lg:p-4">
+      <div className="grid gap-2  mt-5 grid-cols-3 grid-rows-3 max-lg:grid-cols-1 max-lg:p-2">
         <div className="col-span-1 row-span-2 bg-white">
           <h2 className="font-semibold text-xl p-2">Log Income</h2>
 
@@ -161,7 +161,7 @@ const LogIncome = ({ sideBarToggle }: prop) => {
               )}
             </div>
 
-            <div className="ml-3 mr-3 lg:w-[60%] mx-auto">
+            <div className="ml-3 lg:w-[60%] mx-auto">
               <Controller
                 control={control}
                 defaultValue={new Date()}

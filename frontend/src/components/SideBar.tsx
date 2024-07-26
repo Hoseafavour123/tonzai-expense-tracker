@@ -4,14 +4,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import * as apiClient from '../api-client'
 import { useMutation, useQueryClient } from 'react-query'
 import { useAppContext } from '../context/AppContext'
+import { Dispatch, SetStateAction } from 'react'
 
 type props = {
   sideBarToggle: boolean
+  setSideBarToggle: Dispatch<SetStateAction<boolean>>
 }
 
 
 
-const SideBar = ({ sideBarToggle }: props) => {
+const SideBar = ({ sideBarToggle, setSideBarToggle }: props) => {
   const queryClient = useQueryClient()
   const { showToast } = useAppContext()
   const navigate = useNavigate()
@@ -42,31 +44,60 @@ const handleClick = () => {
         <ul className="flex flex-col gap-4 text-xl">
           <li className="hover:bg-gray-50 flex items-center gap-2 p-1">
             <IoMdAnalytics className="h-6 w-6" />
-            <Link to={'/dashboard'}>Dashboard</Link>
+            <Link
+              to={'/dashboard'}
+              onClick={() => setSideBarToggle(!sideBarToggle)}
+            >
+              Dashboard
+            </Link>
           </li>
           <li className=" hover:bg-gray-50 flex items-center gap-2 p-1">
             <FaMoneyBillAlt className="h-6 w-6" />
-            <Link to={'/dashboard/income'}>Income</Link>
+            <Link
+              to={'/dashboard/income'}
+              onClick={() => setSideBarToggle(!sideBarToggle)}
+            >
+              Income
+            </Link>
           </li>
           <li className=" hover:bg-gray-50 flex items-center gap-2 p-1">
             <FaMoneyCheckAlt className="h-6 w-6" />
-            <Link to={'/dashboard/expenses'}>Expenses</Link>
+            <Link
+              to={'/dashboard/expenses'}
+              onClick={() => setSideBarToggle(!sideBarToggle)}
+            >
+              Expenses
+            </Link>
           </li>
         </ul>
 
         <div className="border-t-2 hover:bg-gray-50 p-1 mt-5 flex items-center gap-3 cursor-pointer">
-          <FaCrown className="h-6 w-6 text-purple-500" />
-          <p className="text-xl ">Go Premium</p>
+          <Link
+            to={'/dashboard/premium'}
+            className="flex gap-2"
+            onClick={() => setSideBarToggle(!sideBarToggle)}
+          >
+            <FaCrown className="h-6 w-6 text-purple-500" />
+            <p className="text-xl ">Go Premium</p>
+          </Link>
         </div>
 
         <ul className="flex flex-col gap-4 text-xl border-t-2 mt-5">
           <li className=" hover:bg-gray-50 flex items-center gap-2 p-1 mt-1">
-            <FaCog className='h-6 w-6'/>
-            <Link to={'/settings'}>Settings</Link>
+            <FaCog className="h-6 w-6" />
+            <Link
+              to={'/settings'}
+              onClick={() => setSideBarToggle(!sideBarToggle)}
+            >
+              Settings
+            </Link>
           </li>
-          <button onClick={handleClick} className="hover:bg-gray-50 flex items-center gap-2 mt-5 p-1">
-            <FaSignOutAlt className='h-6 w-6'/>
-            <Link to={'/logout'}>Logout</Link>
+          <button
+            onClick={handleClick}
+            className="hover:bg-gray-50 flex items-center gap-2 mt-5 p-1"
+          >
+            <FaSignOutAlt className="h-6 w-6" />
+            <Link to={'/logout'} >Logout</Link>
           </button>
         </ul>
       </div>

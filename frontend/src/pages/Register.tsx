@@ -43,7 +43,7 @@ const Register = () => {
       <div className="flex max-w-4xl mx-auto flex-col md:flex-row md:items-center max-lg:p-3 shadow-lg bg-white rounded-xl">
         <div className="flex-1 p-3 mt-5">
           <Link to="/" className="sm:text-xl font-bold dark:text-white">
-            <span className="px-4 py-1 rounded bg-gradient-to-r from-blue-500 via-purple-400 to-pink-500 text-bold text-4xl text-white">
+            <span className="px-4 py-1 rounded bg-gradient-to-r from-blue-500 via-purple-400 to-pink-500 text-bold md:text-4xl sm:text-3xl text-white">
               Tonzai
             </span>
             Expense Tracker
@@ -54,7 +54,7 @@ const Register = () => {
         </div>
         <div className="md:mx-5 flex-1 max-lg:p-5">
           <form onSubmit={onSubmit}>
-            <h2 className="mt-5 text-3xl text-bold max-lg:text-center">Register</h2>
+            <h2 className="mt-5 md:text-3xl sm:text-2xl text-bold max-lg:text-center">Register</h2>
             <div className="mt-5">
               <FloatingLabel
                 type="text"

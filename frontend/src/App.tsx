@@ -12,7 +12,7 @@ import LogExpenses from './pages/LogExpenses'
 
 function App() {
   const { isLoggedIn } = useAppContext()
-  const [sideBarToggle, setSideBarToggle] = useState<boolean>(false)
+  const [sideBarToggle, setSideBarToggle] = useState<boolean>(true)
   return (
     <BrowserRouter>
       {isLoggedIn && (
@@ -21,7 +21,7 @@ function App() {
             sideBarToggle={sideBarToggle}
             setSideBarToggle={setSideBarToggle}
           />
-          <SideBar sideBarToggle={sideBarToggle} />
+          <SideBar sideBarToggle={sideBarToggle} setSideBarToggle={setSideBarToggle} />
         </div>
       )}
 

@@ -52,7 +52,7 @@ const Login = () => {
         </div>
         <div className="md:mx-5 flex-1 max-lg:p-5">
           <form onSubmit={onSubmit}>
-            <h2 className="mt-5 text-3xl text-bold max-lg:text-center">
+            <h2 className="mt-5 md:text-3xl sm:text-2xl text-bold max-lg:text-center">
               Login
             </h2>
             <div className="mt-5">

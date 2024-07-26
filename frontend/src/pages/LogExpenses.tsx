@@ -68,11 +68,11 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
         sideBarToggle ? 'm-5' : 'md:ml-[310px]'
       } min-h-screen mt-20 mb-20 `}
     >
-      <h1 className="text-3xl font-bold">Incomes</h1>
+      <h1 className="text-3xl font-bold">Expenses</h1>
       <div className="py-3 mt-2 w-full bg-white rounded-md shadow-md">
         <h1 className="text-2xl font-bold text-center">
-          Total Income:{' '}
-          <span className={`text-green-500 font-bold`}>
+          Total Expenses:{' '}
+          <span className={`text-red-500 font-bold`}>
             {' '}
             $ {totalAmount?.totalAmount}{' '}
           </span>
