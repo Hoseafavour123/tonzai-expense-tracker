@@ -248,10 +248,34 @@ router.get(
       return res.status(200).json(topTransactions)
     } catch (error) {
       console.log(error)
-      res.status(200).json({ message: 'Something went wrong' })
+      res.status(500).json({ message: 'Something went wrong' })
     }
   }
 )
+
+// total amount
+router.get('/total/:type', verifyToken, async (req: Request, res: Response) => {
+  try {
+    const pipeline = [
+      {$match: { type: req.params.type , user: new ObjectId(req.userId)}},
+      { $group: {
+        _id:null,
+        totalAmount: {
+          $sum: '$amount'
+        }
+      }}
+    ]
+
+    const result = await Transaction.aggregate(pipeline)
+    if (result) {
+      console.log(result[0])
+      return res.status(200).json(result[0])
+    }
+  } catch (error) {
+    console.log(error)
+      res.status(500).json({ message: 'Something went wrong' })
+  }
+})
 
 // all income or expenses
 router.get('/:type', verifyToken, async (req, res) => {
@@ -260,9 +284,7 @@ router.get('/:type', verifyToken, async (req, res) => {
       user: req.userId,
       type: req.params.type,
     })
-      .limit(10)
       .sort({ createdAt: -1 })
-      .populate({ path: 'user', select: '-password' })
       .exec()
     res.status(200).json({ transaction })
   } catch (error) {
@@ -297,18 +319,15 @@ router.post(
       .withMessage('type must not be empty')
       .isIn(['income', 'expenses'])
       .withMessage('type must either be income or expenses'),
-    body('date')
-      .notEmpty()
-      .withMessage('date must not be empty')
-      .isDate()
-      .withMessage('invalid date format'),
     body('category').notEmpty().withMessage('category must not be empty'),
     body('description').notEmpty().withMessage('description must not be empty'),
   ],
+
   verifyToken,
   async (req: Request, res: Response) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
+      console.log(errors)
       return res.status(400).json({ message: errors.array() })
     }
 

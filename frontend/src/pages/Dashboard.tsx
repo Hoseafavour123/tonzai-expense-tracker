@@ -215,7 +215,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           <h1 className="md:text-2xl sm:text-xl font-bold text-center text-black mt-3">
             Top Categories
           </h1>
-          <div className="flex justify-around p-1 flex-row-reverse md:flex- sm:flex-col">
+          <div className="flex justify-around p-1 flex-row-reverse md:flex-row max-lg:flex-col">
             {topTransactions &&
               topTransactions.map((transaction) => (
                 <div
@@ -223,9 +223,9 @@ const Dashboard = ({ sideBarToggle }: prop) => {
                     transaction.type === 'income'
                       ? 'text-green-500'
                       : 'text-red-500'
-                  } text-black space-y-3 p-1 max-lg:p-2`}
+                  } text-black md:space-y-3 sm:space-y-1 p-1 max-lg:p-2`}
                 >
-                  <h1 className="text-2xl font-bold">{transaction.type}</h1>
+                  <h1 className="md:text-2xl sm:text-xl font-bold">{transaction.type}</h1>
                   {transaction.topTransactions.map((tran, idx) => (
                     <p>
                       {' '}

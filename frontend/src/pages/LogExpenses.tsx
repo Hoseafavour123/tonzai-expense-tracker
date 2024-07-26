@@ -1,12 +1,11 @@
 import { FloatingLabel, Textarea, Button } from 'flowbite-react'
 import { useMutation, useQuery } from 'react-query'
-import { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { useForm, Controller } from 'react-hook-form'
 import 'react-datepicker/dist/react-datepicker.css'
 import * as apiClient from '../api-client'
 import { useAppContext } from '../context/AppContext'
-import { incomeCategories } from '../assets/constants.'
+import { expensesCategories, incomeCategories } from '../assets/constants.'
 
 type prop = {
   sideBarToggle: boolean
@@ -21,10 +20,12 @@ export type TransactionLogForm = {
   type: 'income' | 'expenses'
 }
 
-const LogIncome = ({ sideBarToggle }: prop) => {
-   const { showToast } = useAppContext()
+const LogExpenses = ({ sideBarToggle }: prop) => {
+  const { showToast } = useAppContext()
 
-  const {data: totalAmount } = useQuery('getTotalAmount', () => apiClient.getTotalAmount('income'))
+  const { data: totalAmount } = useQuery('getTotalAmount', () =>
+    apiClient.getTotalAmount('expenses')
+  )
 
   const {
     register,
@@ -33,8 +34,6 @@ const LogIncome = ({ sideBarToggle }: prop) => {
     formState: { errors },
     handleSubmit,
   } = useForm<TransactionLogForm>()
-
- 
 
   const { mutate, isLoading } = useMutation(apiClient.LogTransaction, {
     onSuccess: async () => {
@@ -82,14 +81,14 @@ const LogIncome = ({ sideBarToggle }: prop) => {
 
       <div className="grid gap-2  mt-5 grid-cols-3 grid-rows-3 max-lg:grid-cols-1 max-lg:p-4">
         <div className="col-span-1 row-span-2 bg-white">
-          <h2 className="font-semibold text-xl p-2">Log Income</h2>
+          <h2 className="font-semibold text-xl p-2">Log Expenses</h2>
 
           <form
             className="flex flex-col gap-4 max-lg:p-4"
             onSubmit={handleSubmit(onSubmit)}
           >
             <input
-              defaultValue={'income'}
+              defaultValue={'expenses'}
               type="text"
               {...register('type', { required: true })}
               className="ml-3 mt-3 mr-3 p-2 bg-gray-100 rounded-lg lg:w-[60%]"
@@ -135,9 +134,9 @@ const LogIncome = ({ sideBarToggle }: prop) => {
                 {...register('category', { required: true })}
                 className=" mt-2 p-2 border border-gray-300 rounded-lg w-full"
               >
-                {incomeCategories.map((income, idx) => (
-                  <option key={idx} value={income.name}>
-                    {income.name}
+                {expensesCategories.map((expense, idx) => (
+                  <option key={idx} value={expense.name}>
+                    {expense.name}
                   </option>
                 ))}
               </select>
@@ -188,7 +187,7 @@ const LogIncome = ({ sideBarToggle }: prop) => {
               className="whitespace-nowrap text-bold text-xl lg:w-[60%] ml-3 mb-4"
               disabled={isLoading}
             >
-              {isLoading ? 'Processing...' : 'Log Income'}
+              {isLoading ? 'Processing...' : 'Log Expense'}
             </Button>
           </form>
         </div>
@@ -199,4 +198,4 @@ const LogIncome = ({ sideBarToggle }: prop) => {
   )
 }
 
-export default LogIncome
+export default LogExpenses

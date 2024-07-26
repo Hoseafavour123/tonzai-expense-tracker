@@ -8,13 +8,14 @@ import SideBar from './components/SideBar'
 import { useState } from 'react'
 import Header from './components/Header'
 import LogIncome from './pages/LogIncome'
+import LogExpenses from './pages/LogExpenses'
 
 function App() {
   const { isLoggedIn } = useAppContext()
   const [sideBarToggle, setSideBarToggle] = useState<boolean>(false)
   return (
     <BrowserRouter>
-      {/*} {!isLoggedIn && (
+      {isLoggedIn && (
         <div className="">
           <Header
             sideBarToggle={sideBarToggle}
@@ -22,27 +23,28 @@ function App() {
           />
           <SideBar sideBarToggle={sideBarToggle} />
         </div>
-      )}*/}
-      <div className="">
-        <Header
-          sideBarToggle={sideBarToggle}
-          setSideBarToggle={setSideBarToggle}
-        />
-        <SideBar sideBarToggle={sideBarToggle} />
-      </div>
+      )}
 
       <Routes>
-        {/* {!isLoggedIn && (
+        {isLoggedIn && (
           <Route
             path="/dashboard"
             element={<Dashboard sideBarToggle={sideBarToggle} />}
           ></Route>
-        )}*/}
-        <Route
-          path="/dashboard"
-          element={<Dashboard sideBarToggle={sideBarToggle} />}
-        ></Route>
-        <Route path="/dashboard/income" element={<LogIncome  sideBarToggle={sideBarToggle}/>} />
+        )}
+        {isLoggedIn && (
+          <Route
+            path="/dashboard/income"
+            element={<LogIncome sideBarToggle={sideBarToggle} />}
+          />
+        )}
+        { isLoggedIn && (
+          <Route
+            path="/dashboard/expenses"
+            element={<LogExpenses sideBarToggle={sideBarToggle} />}
+          />
+        )}
+
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/activation" element={<Activation />} />
