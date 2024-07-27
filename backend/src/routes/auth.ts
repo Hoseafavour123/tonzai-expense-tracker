@@ -178,7 +178,7 @@ router.post(
         process.env.JWT_SECRET as string,
         { expiresIn: '1d' }
       )
-      generateAndSendReport(user._id)
+      //generateAndSendReport(user._id)
       res.cookie('auth_token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',

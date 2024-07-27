@@ -12,7 +12,6 @@ type props = {
 }
 
 
-
 const SideBar = ({ sideBarToggle, setSideBarToggle }: props) => {
   const queryClient = useQueryClient()
   const { showToast } = useAppContext()
@@ -46,7 +45,7 @@ const handleClick = () => {
             <IoMdAnalytics className="h-6 w-6" />
             <Link
               to={'/dashboard'}
-              onClick={() => setSideBarToggle(!sideBarToggle)}
+              onClick={() => window.screen.width < 1024 && setSideBarToggle(!sideBarToggle)}
             >
               Dashboard
             </Link>
@@ -55,7 +54,7 @@ const handleClick = () => {
             <FaMoneyBillAlt className="h-6 w-6" />
             <Link
               to={'/dashboard/income'}
-              onClick={() => setSideBarToggle(!sideBarToggle)}
+              onClick={() => window.screen.width < 1024 && setSideBarToggle(!sideBarToggle)}
             >
               Income
             </Link>
@@ -64,7 +63,7 @@ const handleClick = () => {
             <FaMoneyCheckAlt className="h-6 w-6" />
             <Link
               to={'/dashboard/expenses'}
-              onClick={() => setSideBarToggle(!sideBarToggle)}
+              onClick={() => window.screen.width < 1024 && setSideBarToggle(!sideBarToggle)}
             >
               Expenses
             </Link>
@@ -75,7 +74,7 @@ const handleClick = () => {
           <Link
             to={'/dashboard/premium'}
             className="flex gap-2"
-            onClick={() => setSideBarToggle(!sideBarToggle)}
+            onClick={() => window.screen.width < 1024 && setSideBarToggle(!sideBarToggle)}
           >
             <FaCrown className="h-6 w-6 text-purple-500" />
             <p className="text-xl ">Go Premium</p>
@@ -87,7 +86,7 @@ const handleClick = () => {
             <FaCog className="h-6 w-6" />
             <Link
               to={'/settings'}
-              onClick={() => setSideBarToggle(!sideBarToggle)}
+              onClick={() => window.screen.width < 1024 && setSideBarToggle(!sideBarToggle)}
             >
               Settings
             </Link>
@@ -97,7 +96,7 @@ const handleClick = () => {
             className="hover:bg-gray-50 flex items-center gap-2 mt-5 p-1"
           >
             <FaSignOutAlt className="h-6 w-6" />
-            <Link to={'/logout'} >Logout</Link>
+            <Link to={'/logout'}  >Logout</Link>
           </button>
         </ul>
       </div>

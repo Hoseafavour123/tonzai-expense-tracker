@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from 'react-query'
 import * as apiClient from '../api-client'
-import Loader from '../components/Loader'
 import { useAppContext } from '../context/AppContext'
 
 export type  LoginFormData = {
@@ -47,7 +46,7 @@ const Login = () => {
             Expense Tracker
           </Link>
           <p className="md:mt-5 sm:mt-4 text-xl">
-            <em> Make wiser finacial decisions </em>
+            <em> Make wiser financial decisions </em>
           </p>
         </div>
         <div className="md:mx-5 flex-1 max-lg:p-5">

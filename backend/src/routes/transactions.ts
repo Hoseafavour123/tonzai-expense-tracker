@@ -6,6 +6,7 @@ import User from '../models/User'
 import mongoose from 'mongoose'
 import { ObjectId } from 'mongodb'
 import moment from 'moment'
+import { getActiveReminders } from '../utils/activeReminderObjects'
 
 const router = express.Router()
 
@@ -256,37 +257,44 @@ router.get(
 // total amount
 router.get('/total/:type', verifyToken, async (req: Request, res: Response) => {
   try {
-    const pipeline = [
-      {$match: { type: req.params.type , user: new ObjectId(req.userId)}},
-      { $group: {
-        _id:null,
-        totalAmount: {
-          $sum: '$amount'
-        }
-      }}
-    ]
+    let totalAmount = 0
 
-    const result = await Transaction.aggregate(pipeline)
-    if (result) {
-      console.log(result[0])
-      return res.status(200).json(result[0])
-    }
+    const result = await Transaction.find({
+      user: req.userId,
+      type: req.params.type,
+    })
+    result.forEach((res) => {
+      totalAmount += res.amount
+    })
+
+    return res.status(200).json({ type: res.type, totalAmount })
   } catch (error) {
     console.log(error)
-      res.status(500).json({ message: 'Something went wrong' })
+    res.status(500).json({ message: 'Something went wrong' })
   }
 })
 
 // all income or expenses
-router.get('/:type', verifyToken, async (req, res) => {
+router.get('/:type', verifyToken, async (req: Request, res: Response) => {
   try {
-    const transaction = await Transaction.find({
+    const page = parseInt(req.query.page as string) || 1
+    const limit = parseInt(req.query.limit as string) || 10
+    const startIndex = (page - 1) * limit
+    const transactions = await Transaction.find({
       user: req.userId,
       type: req.params.type,
     })
+      .skip(startIndex)
+      .limit(limit)
       .sort({ createdAt: -1 })
-      .exec()
-    res.status(200).json({ transaction })
+
+    const totalDocuments = await Transaction.countDocuments()
+
+    return res.status(200).json({
+      transactions,
+      currentPage: page,
+      totalPages: Math.ceil(totalDocuments / limit),
+    })
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: 'Something went wrong' })
@@ -372,7 +380,7 @@ router.put('/:id', async (req: Request, res: Response) => {
 router.delete('/:id', verifyToken, async (req: Request, res: Response) => {
   try {
     await Transaction.findByIdAndDelete(req.params.id)
-    res.status(200).json({ message: 'Successfully deleted' })
+    return res.status(200).json({ message: 'Successfully deleted' })
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: 'Somthing went wrong' })

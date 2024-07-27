@@ -1,11 +1,22 @@
 import { FloatingLabel, Textarea, Button } from 'flowbite-react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { useForm, Controller } from 'react-hook-form'
 import 'react-datepicker/dist/react-datepicker.css'
 import * as apiClient from '../api-client'
 import { useAppContext } from '../context/AppContext'
-import { expensesCategories, incomeCategories } from '../assets/constants.'
+import { expenseObjImg, expensesCategories} from '../assets/constants.'
+import moment from 'moment'
+import {
+  commentIcon,
+  dateIcon,
+  deleteIcon,
+  dollarSign,
+  editIcon,
+  nextIcon,
+  prevIcon,
+} from '../assets/icons'
 
 type prop = {
   sideBarToggle: boolean
@@ -22,10 +33,47 @@ export type TransactionLogForm = {
 
 const LogExpenses = ({ sideBarToggle }: prop) => {
   const { showToast } = useAppContext()
+  const queryClient = useQueryClient()
+
+  const [page, setPage] = useState<number>(1)
+
+  const { data: paginatedTransaction } = useQuery(
+    ['getPaginatedTransaction', page],
+    () => apiClient.getPaginatedTransaction({ page, type: 'expenses' }),
+    {
+      keepPreviousData: true
+    }
+  )
 
   const { data: totalAmount } = useQuery('getTotalAmount', () =>
-    apiClient.getTotalAmount('expenses')
+    apiClient.getTotalAmount('expenses'), {
+      onSuccess(data) {
+        //queryClient.invalidateQueries('getTotalAmount')
+      },
+      onError(err: Error) {
+          showToast({ message: err.message, type:'ERROR'})
+      },
+    }
   )
+
+  const { mutate: deleteTransaction } = useMutation(
+    apiClient.deleteTransaction,
+    {
+      onSuccess: () => {
+        showToast({ message: 'Transaction deleted', type: 'SUCCESS' })
+        queryClient.invalidateQueries('getPaginatedTransaction')
+        queryClient.invalidateQueries('getTotalAmount')
+        
+      },
+      onError: (error: Error) => {
+        showToast({ message: error.message, type: 'ERROR' })
+      },
+    }
+  )
+
+  const handleDelete = (id: string) => {
+    deleteTransaction(id)
+  }
 
   const {
     register,
@@ -38,7 +86,9 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
   const { mutate, isLoading } = useMutation(apiClient.LogTransaction, {
     onSuccess: async () => {
       showToast({ message: 'successful', type: 'SUCCESS' })
-      window.location.reload()
+      queryClient.invalidateQueries('getPaginatedTransaction')
+      queryClient.invalidateQueries('getTotalAmount')
+      //window.location.reload()
       reset()
     },
     onError: (error: Error) => {
@@ -62,42 +112,54 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
   const sevenDaysAgo = new Date()
   sevenDaysAgo.setDate(today.getDate() - 7)
 
+  let totalPages: number = paginatedTransaction?.totalPages || 0
+
+  const nextPage = () => {
+    setPage(page + 1)
+  }
+
+  const prevPage = () => {
+    setPage(page - 1)
+  }
+
   return (
     <div
       className={`${
         sideBarToggle ? 'm-5' : 'md:ml-[310px]'
       } min-h-screen mt-20 mb-20 `}
     >
-      <h1 className="text-3xl font-bold">Expenses</h1>
+      <h1 className="md:text-3xl sm:text-2xl font-bold">Expenses</h1>
       <div className="py-3 mt-2 w-full bg-white rounded-md shadow-md">
-        <h1 className="text-2xl font-bold text-center">
+        <h1 className="md:text-2xl sm:text-xl font-bold text-center">
           Total Expenses:{' '}
           <span className={`text-red-500 font-bold`}>
-            {' '}
-            $ {totalAmount?.totalAmount}{' '}
+            {totalAmount && totalAmount?.totalAmount > 0 ? <>
+            $ {totalAmount?.totalAmount}
+            </>: <>$0</> }
+            
           </span>
         </h1>
       </div>
 
-      <div className="grid gap-2  mt-5 grid-cols-3 grid-rows-3 max-lg:grid-cols-1 max-lg:p-4">
-        <div className="col-span-1 row-span-2 bg-white">
-          <h2 className="font-semibold text-xl p-2">Log Expenses</h2>
+      <div className="grid gap-2  mt-5 grid-cols-3 grid-rows-3 max-lg:grid-cols-1 max-lg:p-1">
+        <div className="col-span-1 bg-white">
+          <h2 className="font-semibold text-xl p-2 max-lg:pl-3">Log Expense</h2>
 
           <form
-            className="flex flex-col gap-4 max-lg:p-4"
+            className="flex flex-col gap-4 max-lg:p-3"
             onSubmit={handleSubmit(onSubmit)}
           >
             <input
               defaultValue={'expenses'}
               type="text"
               {...register('type', { required: true })}
-              className="ml-3 mt-3 mr-3 p-2 bg-gray-100 rounded-lg lg:w-[60%]"
+              className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 bg-gray-100 rounded-lg lg:w-[60%]"
             />
             {errors.type && (
               <span className="text-red-500">{errors.type.message}</span>
             )}
 
-            <div className="ml-3 mr-3 lg:w-[60%]">
+            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[60%]">
               <FloatingLabel
                 variant="outlined"
                 label="Title"
@@ -109,7 +171,7 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
               )}
             </div>
 
-            <div className="ml-3 mr-3 lg:w-[60%]">
+            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[60%]">
               <FloatingLabel
                 variant="outlined"
                 label="Amount"
@@ -125,7 +187,7 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
               )}
             </div>
 
-            <div className="ml-3 mr-3 lg:w-[60%]">
+            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[60%]">
               <label htmlFor="" className="block text-gray-500">
                 Category
               </label>
@@ -135,8 +197,8 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
                 className=" mt-2 p-2 border border-gray-300 rounded-lg w-full"
               >
                 {expensesCategories.map((expense, idx) => (
-                  <option key={idx} value={expense.name}>
-                    {expense.name}
+                  <option key={idx} value={expense}>
+                    {expense}
                   </option>
                 ))}
               </select>
@@ -145,7 +207,7 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
               )}
             </div>
 
-            <div className="ml-3 mr-3 lg:w-[60%]">
+            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[60%]">
               <Textarea
                 style={{ resize: 'none' }}
                 rows={4}
@@ -160,7 +222,7 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
               )}
             </div>
 
-            <div className="ml-3 mr-3 lg:w-[60%] mx-auto">
+            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg md:w-[60%]">
               <Controller
                 control={control}
                 defaultValue={new Date()}
@@ -183,16 +245,129 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
             <Button
               type="submit"
               outline
-              gradientDuoTone="pinkToOrange"
-              className="whitespace-nowrap text-bold text-xl lg:w-[60%] ml-3 mb-4"
+              gradientDuoTone={'pinkToOrange'}
+              className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[60%]"
               disabled={isLoading}
             >
               {isLoading ? 'Processing...' : 'Log Expense'}
             </Button>
           </form>
         </div>
+        {paginatedTransaction && paginatedTransaction?.transactions.length  > 0 ? (
+          <>
+            <div className={`col-span-2 row-span-1 w-full h-full bg-white`}>
+              <h1 className="text-center sm:text-2xl max-lg:text-xl font-bold">
+                Manage
+              </h1>
+              <div className="flex flex-col gap-5 sm:p-3 max-lg:p-2">
+                {paginatedTransaction?.transactions.map((transaction) => (
+                  <div className="shadow-md max-lg:pb-3">
+                    {expenseObjImg[transaction.category] && (
+                      <div className="flex  md:flex-row max-lg:flex-row md:gap-3 md:p-2 justify-between max-lg:p-1">
+                        <div className="md:flex sm:flex-col md:flex-row gap-5 md:ml-5 items-center md:items-start">
+                          <div className="">
+                            <img
+                              src={`${expenseObjImg[transaction.category]}`}
+                              className=" bg-gray-100 md:min-w-14 h-14 max-lg:w-12 max-lg:h-12 rounded-full p-2"
+                              alt=""
+                            />
+                          </div>
 
-        <div className="col-span-2 row-span-1 w-full h-full bg-white">1</div>
+                          <div className="flex flex-col gap-2 max-lg:gap-1">
+                            <div className="flex items-center md:gap-2 max-lg:gap-1">
+                              <div className="w-2 h-2 bg-green-500  rounded-full"></div>
+                              <h3 className="sm:text-xl max-lg:text-sm font-bold">
+                                {transaction.category}
+                              </h3>
+                            </div>
+
+                            <div className="flex max-lg:flex-col md:flex-row gap-5 max-lg:gap-3 sm:text-sm max-lg:text-xs text-gray-700">
+                              <div className="flex gap-1 items-center">
+                                <img
+                                  src={dollarSign}
+                                  className="w-4 h-4"
+                                  alt=""
+                                />
+                                <span className="">{transaction.amount} </span>
+                              </div>
+                              <div className="flex gap-1 items-center">
+                                <img
+                                  src={dateIcon}
+                                  className="w-4 h-4"
+                                  alt=""
+                                />
+                                <span>
+                                  {' '}
+                                  {moment(transaction.date).format(
+                                    'YYYY MMM DD'
+                                  )}
+                                </span>
+                              </div>
+                              <div className="flex gap-1 items-center">
+                                <img
+                                  src={commentIcon}
+                                  className="w-3 h-3"
+                                  alt=""
+                                />
+                                <span>{transaction.description}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 max-lg:mt-5 sm:mt-2 max-lg:ml-2 max-lg:mb-3">
+                          <button className="cursor-pointer md:w-12 md:h-12 sm:w-8 sm:h-8 max-lg:h-5 max-lg:w-5">
+                            {' '}
+                            <img
+                              src={editIcon}
+                              className="bg-blue-100 rounded-full md:p-2 sm:p-1"
+                              alt=""
+                            />{' '}
+                          </button>
+                          <button
+                            className="cursor-pointer md:w-12 md:h-12 sm:w-8 s max-lg:h-5 max-lg:w-5"
+                            onClick={() => handleDelete(transaction._id)}
+                          >
+                            {' '}
+                            <img
+                              src={deleteIcon}
+                              className="bg-red-100 rounded-full md:p-2 sm:p-1"
+                              alt=""
+                            />{' '}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center space-x-2 mt-4 mb-7 static">
+                <button
+                  onClick={prevPage}
+                  disabled={page === 1}
+                  className="bg-gray-300 hover:bg-gray-700 text-white font-bold py-2 px-4 max-lg:px-3 rounded"
+                >
+                  <img src={prevIcon} className="w-8 h-8 max-lg:w-6" alt="" />
+                </button>
+                <button
+                  onClick={nextPage}
+                  disabled={page === totalPages}
+                  className="bg-gray-300 hover:bg-gray-700 text-white font-bold py-2 px-4 max-lg:px-3 rounded"
+                >
+                  <img src={nextIcon} className="w-8 h-8 max-lg:w-6" alt="" />
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="md:col-span-2 md:col-start-2 md:col-end-4 row-span-1 w-full bg-white flex items-center justify-center max-lg:h-[300px] max-lg:p-3 md:h-[400px]">
+              <h1 className="text-center text-sm text-gray-600">
+                Log an expense to manage...
+              </h1>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

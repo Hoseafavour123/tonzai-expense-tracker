@@ -1,26 +1,75 @@
-import { businessImg, commissionImg, freelanceImg, investmentImg, pensionImg, rentalImg, royaltiesImg } from './icons'
+import {
+  businessImg,
+  commissionImg,
+  debtImg,
+  educationImg,
+  entertainmentImg,
+  foodIcon,
+  freelanceImg,
+  giftImg,
+  houseImg,
+  investmentImg,
+  pensionImg,
+  personalcareImg,
+  rentalImg,
+  royaltiesImg,
+  savingsImg,
+  socialSecurityImg,
+  transaportationImg,
+  utilityImg,
+} from './icons'
+
+
+type TransactionImgObjType = {
+   [key: string]: string
+}
 
 export const incomeCategories = [
-  { name: 'Freelance', img: freelanceImg },
-  { name: 'Investment', img: investmentImg },
-  { name: 'Rental', rentalImg },
-  { name: 'Business', businessImg },
-  { name: 'Commissions', commissionImg },
-  { name: 'Royalties', royaltiesImg },
-  { name: 'Pension', pensionImg },
-  { name: 'Social Securities' },
-  { name: 'Gifts & Grants' },
+  'Freelance',
+  'Investment',
+  'Rental',
+  'Business',
+  'Commissions',
+  'Royalties',
+  'Pension',
+  'Social Securities',
+  'Gifts & Grants',
 ]
+
+export const IncomeImgObj : TransactionImgObjType = {
+  'Freelance': freelanceImg,
+  'Investment': investmentImg,
+  'Rental': rentalImg,
+  'Business': businessImg,
+  'Commissions': commissionImg,
+  'Royalties': royaltiesImg,
+  'Pension': pensionImg,
+  'Social Securities': socialSecurityImg,
+  'Gifts & Grants': giftImg
+}
+
+
 
 export const expensesCategories = [
-    {name: 'Food'},
-    {name: 'Housing'},
-    {name: 'Transportation'},
-    {name: 'Personal Care'},
-    {name: 'Education'},
-    {name: 'Savings & Investments'},
-    {name: 'Entertainment'},
-    {name: 'Debt Payment'},
-    {name: 'Utilities'}
-
+  'Food',
+  'Housing',
+  'Transportation',
+  'Personal Care',
+  'Education',
+  'Savings & Investments',
+  'Entertainment',
+  'Debt Payment',
+  'Utilities',
 ]
+
+export const expenseObjImg : TransactionImgObjType= {
+  'Food': foodIcon,
+  'Housing': houseImg,
+  'Transportation': transaportationImg,
+  'Personal Care': personalcareImg,
+  'Education': educationImg,
+  'Savings & Investments': savingsImg,
+  'Entertainment': entertainmentImg,
+  'Debt Payment': debtImg,
+  'Utilities': utilityImg
+}

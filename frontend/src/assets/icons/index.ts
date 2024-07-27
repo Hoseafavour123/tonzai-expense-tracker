@@ -14,6 +14,26 @@ import pensionImg from './welfare-pension-insurance-premium-svgrepo-com.svg'
 import socialSecurityImg from './add-document-round-svgrepo-com.svg'
 import giftImg from './gifts-svgrepo-com.svg'
 
+import foodIcon from './food-svgrepo-com.svg'
+import houseImg from './house-svgrepo-com.svg'
+import transaportationImg from './transportation-svgrepo-com.svg'
+import personalcareImg from './personal-care-svgrepo-com.svg'
+import educationImg from './education-cap-svgrepo-com.svg'
+import savingsImg from './savings-svgrepo-com.svg'
+import entertainmentImg from './television-technology-entertainment-svgrepo-com.svg'
+import utilityImg from './house-utilities-svgrepo-com.svg'
+import debtImg from './debt-collection-round-svgrepo-com.svg'
+
+
+import dateIcon from './date-range-svgrepo-com.svg'
+import commentIcon from './comment-1-svgrepo-com.svg'
+import deleteIcon from './delete-svgrepo-com.svg'
+import nextIcon from './next-arrow-forward-svgrepo-com.svg'
+import prevIcon from './previous-outline-svgrepo-com.svg'
+import editIcon from './edit-button-svgrepo-com.svg'
+
+
+
 export {
     dollarSign,
     wallet,
@@ -29,5 +49,23 @@ export {
     royaltiesImg,
     pensionImg,
     socialSecurityImg,
-    giftImg
+    giftImg,
+
+    foodIcon,
+    houseImg,
+    transaportationImg,
+    personalcareImg,
+    educationImg,
+    savingsImg,
+    entertainmentImg,
+    utilityImg,
+    debtImg,
+
+
+    dateIcon,
+    commentIcon,
+    deleteIcon,
+    nextIcon,
+    prevIcon,
+    editIcon
 }

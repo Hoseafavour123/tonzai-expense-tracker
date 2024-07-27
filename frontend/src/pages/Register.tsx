@@ -49,7 +49,7 @@ const Register = () => {
             Expense Tracker
           </Link>
           <p className="mt-5 text-xl">
-            <em> Make wiser finacial decisions </em>
+            <em> Make wiser financial decisions </em>
           </p>
         </div>
         <div className="md:mx-5 flex-1 max-lg:p-5">

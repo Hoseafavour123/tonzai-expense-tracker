@@ -83,10 +83,16 @@ const Dashboard = ({ sideBarToggle }: prop) => {
     }
   )
 
-  const { data: transactions } = useQuery( 
+  const { data: transactions } = useQuery(
     [
       'getTransactions',
-      { selectedType, data, transactionSummary, recentTransactions, topTransactions },
+      {
+        selectedType,
+        data,
+        transactionSummary,
+        recentTransactions,
+        topTransactions,
+      },
     ],
     apiClient.getTransactions,
     {
@@ -98,8 +104,6 @@ const Dashboard = ({ sideBarToggle }: prop) => {
       },
     }
   )
-
-  
 
   if (isLoading) {
     ;<Loader />
@@ -180,27 +184,37 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           <h1 className="md:text-2xl sm:text-xl text-black">
             Recent transactions
           </h1>
-          <ol className="flex flex-col space-y-4 text-black mt-3 overflow-y-auto p-2">
-            {recentTransactions?.map((transaction, idx) => (
-              <li className="font-semi md:text-xl sm:text-sm shadow rounded-xl p-1">
-                <small className="text-gray-400 text-xs inline">
-                  {idx + 1}.{' '}
-                  {moment(transaction.createdAt).format('MMMM D, YYYY')}
-                </small>
-                <small
-                  className={`${
-                    transaction.type === 'income'
-                      ? 'text-green-500'
-                      : 'text-red-500'
-                  } ml-3 max-lg:text-sm`}
-                >
-                  {' '}
-                  {transaction.category} - {transaction.description}- $
-                  {transaction.amount}{' '}
-                </small>
-              </li>
-            ))}
-          </ol>
+          {recentTransactions && recentTransactions?.length > 0 ? (
+            <>
+              <ol className="flex flex-col space-y-4 text-black mt-3 overflow-y-auto p-2">
+                {recentTransactions?.map((transaction, idx) => (
+                  <li className="font-semi md:text-xl sm:text-sm shadow rounded-xl p-1">
+                    <small className="text-gray-400 text-xs inline">
+                      {idx + 1}.{' '}
+                      {moment(transaction.createdAt).format('MMMM D, YYYY')}
+                    </small>
+                    <small
+                      className={`${
+                        transaction.type === 'income'
+                          ? 'text-green-500'
+                          : 'text-red-500'
+                      } ml-3 max-lg:text-sm`}
+                    >
+                      {' '}
+                      {transaction.category} - {transaction.description}- $
+                      {transaction.amount}{' '}
+                    </small>
+                  </li>
+                ))}
+              </ol>
+            </>
+          ) : (
+            <>
+              <div className="flex justify-center items-center h-full w-full text-sm text-gray-700 mb-5">
+                no recent transactions
+              </div>
+            </>
+          )}
         </div>
 
         <div className="lg:col-span-3 lg:row-span-3 lg:h-full lg:w-full bg-white md:col-span-2 md:row-span-1 sm:col-span-1 sm:row-span-1 max-lg:w-[335px] max-lg:h-[280px] md:h-full md:w-full">
@@ -215,26 +229,37 @@ const Dashboard = ({ sideBarToggle }: prop) => {
           <h1 className="md:text-2xl sm:text-xl font-bold text-center text-black mt-3">
             Top Categories
           </h1>
-          <div className="flex justify-around p-1 flex-row-reverse md:flex-row max-lg:flex-col">
-            {topTransactions &&
-              topTransactions.map((transaction) => (
-                <div
-                  className={`${
-                    transaction.type === 'income'
-                      ? 'text-green-500'
-                      : 'text-red-500'
-                  } text-black md:space-y-3 sm:space-y-1 p-1 max-lg:p-2`}
-                >
-                  <h1 className="md:text-2xl sm:text-xl font-bold">{transaction.type}</h1>
-                  {transaction.topTransactions.map((tran, idx) => (
-                    <p>
-                      {' '}
-                      {idx + 1}. {tran.category} - ${tran.amount}{' '}
-                    </p>
-                  ))}
-                </div>
-              ))}
-          </div>
+          {topTransactions && topTransactions.length > 0 ? (
+            <>
+              <div className="flex justify-around p-1 flex-row-reverse md:flex-row max-lg:flex-col">
+                {topTransactions.map((transaction) => (
+                  <div
+                    className={`${
+                      transaction.type === 'income'
+                        ? 'text-green-500'
+                        : 'text-red-500'
+                    } text-black md:space-y-3 sm:space-y-1 p-1 max-lg:p-2`}
+                  >
+                    <h1 className="md:text-2xl sm:text-xl font-bold">
+                      {transaction.type}
+                    </h1>
+                    {transaction.topTransactions.map((tran, idx) => (
+                      <p>
+                        {' '}
+                        {idx + 1}. {tran.category} - ${tran.amount}{' '}
+                      </p>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex justify-center items-center h-full text-sm text-gray-700 bg-white">
+                no top categories
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

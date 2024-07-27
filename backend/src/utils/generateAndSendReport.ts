@@ -124,7 +124,7 @@ export const generateAndSendReport = async (
       )
 
     doc.end()
-    cron.schedule('9 21 * * *', () => {
+    cron.schedule('0 22 * * 6', () => {
       sendMail({
         email: user?.email,
         subject: 'Weekly Income/Expense Report',
@@ -137,11 +137,7 @@ export const generateAndSendReport = async (
         ],
       })
     })
-    fs.unlink(pdfpath, (err) => {
-      if (err) {
-        console.log('Error deleting pdf: ', err)
-      }
-    })
+    fs.unlinkSync(pdfpath);
   } catch (error) {
     console.log(error)
     return

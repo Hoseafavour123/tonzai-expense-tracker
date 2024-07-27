@@ -10,6 +10,7 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import { recreateReminders } from './utils/recreateReminders'
+import { getActiveReminders } from './utils/activeReminderObjects'
 
 const app = express()
 app.use(express.json())
