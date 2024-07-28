@@ -134,8 +134,8 @@ const LogIncome = ({ sideBarToggle }: prop) => {
         </h1>
       </div>
 
-      <div className="grid gap-2  mt-5 grid-cols-3 grid-rows-3 max-lg:grid-cols-1 max-lg:p-1">
-        <div className="col-span-1 bg-white">
+      <div className="grid gap-2 mt-5 grid-cols-3 max-lg:grid-cols-1 max-lg:p-1">
+        <div className="col-span-1 md:col-span-1 md:col-start-1 lg:col-span-1 lg:col-start-2 bg-white">
           <h2 className="font-semibold text-xl p-2 max-lg:pl-3">Log Income</h2>
 
           <form
@@ -146,13 +146,13 @@ const LogIncome = ({ sideBarToggle }: prop) => {
               defaultValue={'income'}
               type="text"
               {...register('type', { required: true })}
-              className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 bg-gray-100 rounded-lg lg:w-[60%]"
+              className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 bg-gray-100 rounded-lg lg:w-[90%] md:w-[60%]"
             />
             {errors.type && (
               <span className="text-red-500">{errors.type.message}</span>
             )}
 
-            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[60%]">
+            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[90%] md:w-[60%]">
               <FloatingLabel
                 variant="outlined"
                 label="Title"
@@ -164,7 +164,7 @@ const LogIncome = ({ sideBarToggle }: prop) => {
               )}
             </div>
 
-            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[60%]">
+            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[90%] md:w-[60%]">
               <FloatingLabel
                 variant="outlined"
                 label="Amount"
@@ -180,7 +180,7 @@ const LogIncome = ({ sideBarToggle }: prop) => {
               )}
             </div>
 
-            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[60%]">
+            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[90%] md:w-[60%] ">
               <label htmlFor="" className="block text-gray-500">
                 Category
               </label>
@@ -200,7 +200,7 @@ const LogIncome = ({ sideBarToggle }: prop) => {
               )}
             </div>
 
-            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[60%]">
+            <div className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[90%] md:w-[60%]">
               <Textarea
                 style={{ resize: 'none' }}
                 rows={4}
@@ -238,7 +238,7 @@ const LogIncome = ({ sideBarToggle }: prop) => {
             <Button
               type="submit"
               outline
-              className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[60%] mb-5"
+              className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[90%] mb-5"
               disabled={isLoading}
             >
               {isLoading ? 'Processing...' : 'Log Income'}
@@ -247,7 +247,7 @@ const LogIncome = ({ sideBarToggle }: prop) => {
         </div>
         {paginatedTransaction && paginatedTransaction?.transactions.length > 0 ? (
           <>
-            <div className={`col-span-2 row-span-1 w-full h-full bg-white`}>
+            <div className={`col-span-2 row-span-1 w-full h-full bg-white hidden`}>
               <h1 className="text-center sm:text-2xl max-lg:text-xl font-bold">
                 Manage
               </h1>
@@ -353,7 +353,7 @@ const LogIncome = ({ sideBarToggle }: prop) => {
           </>
         ) : (
           <>
-            <div className="md:col-span-2 md:col-start-2 md:col-end-4 row-span-1 w-full bg-white flex items-center justify-center max-lg:h-[300px] max-lg:p-3 md:h-[400px]">
+            <div className="md:col-span-2 md:col-start-2 md:col-end-4 row-span-1 w-full bg-white items-center justify-center max-lg:h-[300px] max-lg:p-3 md:h-[400px] hidden">
               <h1 className="text-center text-sm text-gray-600">
                 Log an income to manage...
               </h1>

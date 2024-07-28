@@ -40,9 +40,9 @@ const handleClick = () => {
       } min-h-screen bg-white w-[300px] transition-all ease-in-out fixed -mt-3 z-50`}
     >
       <div className="flex flex-col gap-4 p-3">
-        <ul className="flex flex-col gap-4 text-xl">
+        <ul className="flex flex-col gap-4 md:text-xl ">
           <li className="hover:bg-gray-50 flex items-center gap-2 p-1">
-            <IoMdAnalytics className="h-6 w-6" />
+            <IoMdAnalytics className="md:h-6 md:w-6 max-lg:w-5 max-lg:h-5" />
             <Link
               to={'/dashboard'}
               onClick={() => window.screen.width < 1024 && setSideBarToggle(!sideBarToggle)}
@@ -51,7 +51,7 @@ const handleClick = () => {
             </Link>
           </li>
           <li className=" hover:bg-gray-50 flex items-center gap-2 p-1">
-            <FaMoneyBillAlt className="h-6 w-6" />
+            <FaMoneyBillAlt className="md:h-6 md:w-6 max-lg:w-5 max-lg:h-5" />
             <Link
               to={'/dashboard/income'}
               onClick={() => window.screen.width < 1024 && setSideBarToggle(!sideBarToggle)}
@@ -60,7 +60,7 @@ const handleClick = () => {
             </Link>
           </li>
           <li className=" hover:bg-gray-50 flex items-center gap-2 p-1">
-            <FaMoneyCheckAlt className="h-6 w-6" />
+            <FaMoneyCheckAlt className="md:h-6 md:w-6 max-lg:w-5 max-lg:h-5" />
             <Link
               to={'/dashboard/expenses'}
               onClick={() => window.screen.width < 1024 && setSideBarToggle(!sideBarToggle)}
@@ -76,14 +76,14 @@ const handleClick = () => {
             className="flex gap-2"
             onClick={() => window.screen.width < 1024 && setSideBarToggle(!sideBarToggle)}
           >
-            <FaCrown className="h-6 w-6 text-purple-500" />
-            <p className="text-xl ">Go Premium</p>
+            <FaCrown className="md:h-6 md:w-6 max-lg:w-5 max-lg:h-5 text-purple-500" />
+            <p className="md:text-xl ">Go Premium</p>
           </Link>
         </div>
 
-        <ul className="flex flex-col gap-4 text-xl border-t-2 mt-5">
+        <ul className="flex flex-col gap-4 md:text-xl border-t-2 mt-5">
           <li className=" hover:bg-gray-50 flex items-center gap-2 p-1 mt-1">
-            <FaCog className="h-6 w-6" />
+            <FaCog className="md:h-6 md:w-6 max-lg:w-5 max-lg:h-5" />
             <Link
               to={'/settings'}
               onClick={() => window.screen.width < 1024 && setSideBarToggle(!sideBarToggle)}
@@ -95,7 +95,7 @@ const handleClick = () => {
             onClick={handleClick}
             className="hover:bg-gray-50 flex items-center gap-2 mt-5 p-1"
           >
-            <FaSignOutAlt className="h-6 w-6" />
+            <FaSignOutAlt className="md:h-md:6 w-6 max-lg:w-5 max-lg:h-5" />
             <Link to={'/logout'}  >Logout</Link>
           </button>
         </ul>

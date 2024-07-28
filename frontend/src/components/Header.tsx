@@ -19,7 +19,7 @@ const Header = ({ sideBarToggle, setSideBarToggle }: props) => {
             sideBarToggle ? 'hidden' : ''
           }`}
         >
-          <span className="px-4 py-1 rounded bg-gradient-to-r from-indigo-500 via-purple-400 to-pink-500 text-bold text-2xl text-white max-lg:px-1">
+          <span className="px-4 py-1 rounded bg-gradient-to-r from-indigo-500 via-purple-400 to-pink-500 text-bold md:text-2xl max-lg:text-xl sm:text-2x text-white max-lg:px-1">
             Tonzai
           </span>
           Expense Tracker
@@ -33,16 +33,16 @@ const Header = ({ sideBarToggle, setSideBarToggle }: props) => {
       </div>
       <div className={`flex gap-5 max-lg:gap-2 items-center`}>
         <div className="p-1 relative cursor-pointer">
-          <img src={notification} width={25} height={25} alt="" />{' '}
+          <img src={notification} width={25} height={25} alt="" className='max-lg:w-5 max-lg:h-5' />{' '}
           <div className="absolute top-1 right-1 w-3 h-3 rounded-full bg-red-500  hover:animate-ping"></div>
         </div>
-        <div className="p-1 relative cursor-pointer border-green-400 max-lg:mr-3">
+        <div className="p-1 relative cursor-pointer border-green-400 max-lg:mr-4">
           <img
             src={profilepic}
-            width={20}
-            height={20}
+            width={25}
+            height={25}
             alt=""
-            className=" rounded-full border-2 "
+            className="rounded-full border-2 max-lg:w-5 max-lg:h-5"
             onClick={() => setDropDown(!dropDown)}
           />
           <div className={`absolute top-12 right-3 bg-blue-200 rounded-md`}>

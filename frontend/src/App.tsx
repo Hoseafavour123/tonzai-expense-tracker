@@ -45,11 +45,11 @@ function App() {
           />
         )}
 
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Login/>}/>
         <Route path="/register" element={<Register />} />
         <Route path="/activation" element={<Activation />} />
         <Route path="/login" element={<Login />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
   )
