@@ -2,7 +2,7 @@ import { useMutation, useQuery } from 'react-query'
 import * as apiClient from '../api-client'
 import { useAppContext } from '../context/AppContext'
 import { Button, FloatingLabel } from 'flowbite-react'
-import { useState, Dispatch, SetStateAction } from 'react'
+import { useState, Dispatch, SetStateAction, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { storage } from '../config/firebase.config'
@@ -173,9 +173,9 @@ const Settings = ({ sideBarToggle }: props) => {
               outline
               gradientDuoTone="tealToLime"
               className="p-0.5"
-              onClick={() => setTime('9:25 pm')}
+              onClick={() => setTime('12:00 am')}
             >
-              9:25 pm
+              12:00 am
             </Button>
           </div>
         </div>
@@ -214,7 +214,7 @@ const Settings = ({ sideBarToggle }: props) => {
                     ) : (
                       <div className="relative h-full w-full rounded-full">
                         <img
-                          src={user?.image ? user?.image : imgURL}
+                          src={imgURL}
                           alt="image"
                           className="w-full h-full object-cover rounded-full"
                         />

@@ -17,7 +17,7 @@ const Card = ({ iconImg, title, amount, period, avgDaily }: prop) => {
           <img src={iconImg.src} alt={iconImg.alt} width={24} height={22} />
         </div>
         <div className="flex flex-col items-center">
-          <h1 className="md:text-4xl sm:text-3xl text-black font-bold">${amount}</h1>
+          <h1 className={`md:text-4xl sm:text-3xl text-${avgDaily?.color}-500 font-bold`}>${amount}</h1>
           <small className={`text-${avgDaily?.color}-500 font-bold`}> </small>
         </div>
       </div>
