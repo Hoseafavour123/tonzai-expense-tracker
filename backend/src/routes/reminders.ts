@@ -16,8 +16,12 @@ router.post(
   [check('time', 'time is required, format(9:00 am)').isString()],
   verifyToken,
   async (req: Request, res: Response) => {
+    console.log(req.body)
     try {
       const user = await User.findById(req.userId).select('-password -createdAt -updatedAt')
+
+      await CronReminder.deleteMany({})
+      
       const newReminder = await CronReminder.create({
         time: req.body.time,
         email: user?.email,
@@ -28,7 +32,6 @@ router.post(
       return res
         .status(200)
         .json({
-          message: 'Successfully set email reminder.',
           reminder: newReminder,
         })
     } catch (error) {

@@ -85,7 +85,7 @@ const handleClick = () => {
           <li className=" hover:bg-gray-50 flex items-center gap-2 p-1 mt-1">
             <FaCog className="md:h-6 md:w-6 max-lg:w-5 max-lg:h-5" />
             <Link
-              to={'/settings'}
+              to={'/dashboard/settings'}
               onClick={() => window.screen.width < 1024 && setSideBarToggle(!sideBarToggle)}
             >
               Settings

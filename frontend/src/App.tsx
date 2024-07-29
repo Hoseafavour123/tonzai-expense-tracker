@@ -9,6 +9,7 @@ import { useState } from 'react'
 import Header from './components/Header'
 import LogIncome from './pages/LogIncome'
 import LogExpenses from './pages/LogExpenses'
+import Settings from './pages/Settings'
 
 function App() {
   const { isLoggedIn } = useAppContext()
@@ -21,7 +22,10 @@ function App() {
             sideBarToggle={sideBarToggle}
             setSideBarToggle={setSideBarToggle}
           />
-          <SideBar sideBarToggle={sideBarToggle} setSideBarToggle={setSideBarToggle} />
+          <SideBar
+            sideBarToggle={sideBarToggle}
+            setSideBarToggle={setSideBarToggle}
+          />
         </div>
       )}
 
@@ -38,18 +42,34 @@ function App() {
             element={<LogIncome sideBarToggle={sideBarToggle} />}
           />
         )}
-        { isLoggedIn && (
+        {isLoggedIn && (
           <Route
             path="/dashboard/expenses"
             element={<LogExpenses sideBarToggle={sideBarToggle} />}
           />
         )}
 
-        <Route path="/" element={<Login/>}/>
+        {isLoggedIn && (
+          <Route
+            path="/dashboard/settings"
+            element={<Settings sideBarToggle={sideBarToggle} />}
+          />
+        )}
+
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? (
+              <Navigate to={'/dashboard'} />
+            ) : (
+              <Navigate to={'/login'} />
+            )
+          }
+        />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/activation" element={<Activation />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
   )

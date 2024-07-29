@@ -1,10 +1,10 @@
+import { resolveSoa } from 'dns'
 import { Activation } from './pages/Activation'
 import { LoginFormData } from './pages/Login'
 import { TransactionLogForm } from './pages/LogIncome'
 import { RegisterFormData } from './pages/Register'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
-
 
 export interface TransactionType {
   _id: string
@@ -16,9 +16,7 @@ export interface TransactionType {
   description: string
   user: string
   createdAt: Date
- 
 }
-
 
 type previousSummary = {
   totalPrevIncome: number
@@ -27,7 +25,7 @@ type previousSummary = {
 }
 
 type PaginatedRequest = {
-  page: number,
+  page: number
   type: string
 }
 
@@ -45,18 +43,15 @@ interface TransactionSummaryType {
   previousSummary: previousSummary
 }
 
-
-
 export interface AllTransactionType {
-  income: TransactionType[],
+  income: TransactionType[]
   expenses: TransactionType[]
 }
 
 export interface TopTransactionsType {
   type: string
-  topTransactions: { amount: number, category: string }[]
+  topTransactions: { amount: number; category: string }[]
 }
-
 
 export const register = async (formData: RegisterFormData) => {
   const response = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
@@ -127,7 +122,6 @@ export const login = async (formData: LoginFormData) => {
   return body
 }
 
-
 export const getTransactionSummary = async (
   period: string
 ): Promise<TransactionSummaryType> => {
@@ -148,7 +142,7 @@ export const getTransactionSummary = async (
   return response.json()
 }
 
-export const getRecentTransactions = async () : Promise<TransactionType[]> => {
+export const getRecentTransactions = async (): Promise<TransactionType[]> => {
   const response = await fetch(`${API_BASE_URL}/api/v1/transactions/recent`, {
     credentials: 'include',
   })
@@ -159,7 +153,6 @@ export const getRecentTransactions = async () : Promise<TransactionType[]> => {
 
   return response.json()
 }
-
 
 export const getTransactions = async (): Promise<AllTransactionType> => {
   const response = await fetch(`${API_BASE_URL}/api/v1/transactions`, {
@@ -173,10 +166,16 @@ export const getTransactions = async (): Promise<AllTransactionType> => {
   return response.json()
 }
 
-export const getPaginatedTransaction = async ({page, type}: PaginatedRequest) : Promise<PaginatedResponse> => {
-  const response = await fetch(`${API_BASE_URL}/api/v1/transactions/${type}?page=${page}`, {
-    credentials: 'include',
-  })
+export const getPaginatedTransaction = async ({
+  page,
+  type,
+}: PaginatedRequest): Promise<PaginatedResponse> => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/v1/transactions/${type}?page=${page}`,
+    {
+      credentials: 'include',
+    }
+  )
 
   if (!response.ok) {
     throw new Error('Error fetching Transactions')
@@ -185,11 +184,13 @@ export const getPaginatedTransaction = async ({page, type}: PaginatedRequest) : 
   return response.json()
 }
 
-
-export const getTopTransactions = async () : Promise<TopTransactionsType[]> => {
-  const response = await fetch(`${API_BASE_URL}/api/v1/transactions/top-income-and-expenses`, {
-    credentials: 'include',
-  })
+export const getTopTransactions = async (): Promise<TopTransactionsType[]> => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/v1/transactions/top-income-and-expenses`,
+    {
+      credentials: 'include',
+    }
+  )
 
   if (!response.ok) {
     throw new Error('Error fetching Transactions')
@@ -198,7 +199,9 @@ export const getTopTransactions = async () : Promise<TopTransactionsType[]> => {
   return response.json()
 }
 
-export const getTotalAmount = async (type: string): Promise<{totalAmount: number, type: string}> => {
+export const getTotalAmount = async (
+  type: string
+): Promise<{ totalAmount: number; type: string }> => {
   const response = await fetch(
     `${API_BASE_URL}/api/v1/transactions/total/${type}`,
     {
@@ -213,27 +216,23 @@ export const getTotalAmount = async (type: string): Promise<{totalAmount: number
   return response.json()
 }
 
-
-
-
 export const LogTransaction = async (formData: TransactionLogForm) => {
- const response = await fetch(`${API_BASE_URL}/api/v1/transactions/create`, {
-   method: 'POST',
-   credentials: 'include',
-   headers: {
-     'Content-Type': 'application/json',
-   },
-   body: JSON.stringify(formData),
- })
- const body = await response.json()
- if (!response.ok) {
-   throw new Error(body.message)
- }
- return body
-
+  const response = await fetch(`${API_BASE_URL}/api/v1/transactions/create`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+  })
+  const body = await response.json()
+  if (!response.ok) {
+    throw new Error(body.message)
+  }
+  return body
 }
 
-export const deleteTransaction =  async (id: string) => {
+export const deleteTransaction = async (id: string) => {
   const response = await fetch(`${API_BASE_URL}/api/v1/transactions/${id}`, {
     method: 'DELETE',
     credentials: 'include',
@@ -244,4 +243,21 @@ export const deleteTransaction =  async (id: string) => {
   }
 
   return response.json()
+}
+
+export const createReminder = async (time: string) => {
+     const response = await fetch(`${API_BASE_URL}/api/v1/reminders/create`, {
+       method: 'POST',
+       credentials: 'include',
+       headers: {
+         'Content-Type': 'application/json',
+       },
+       body: JSON.stringify({ time }),
+     })
+     const body = await response.json()
+     if (!response.ok) {
+       throw new Error('An error occurred')
+     }
+
+     return body
 }

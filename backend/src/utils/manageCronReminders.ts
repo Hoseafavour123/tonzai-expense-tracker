@@ -38,7 +38,10 @@ export const startReminderSchedule = ({ newReminder, email, name, time }: StartR
     sendMail({
       email,
       subject: 'Log Your Expenses',
-      html: `Hello <strong>${name}!</strong> <p>Log in to Tonzai Expense Tracker and track your expenses for the day!</p>`,
+      html: `Hello <strong>${name}!</strong> <p> It's time to track your expenses for today! Head on to your<a href="https://tonzai-expense-tracker.onrender.com/dashboard/expenses"> dashboard.</a></p>
+      <br>
+      <em>Make wise financial decisions.</em>
+      <p>Kind regards.</p>`,
     })
   )
   scheduledTask.start()

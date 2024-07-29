@@ -13,15 +13,21 @@ import { recreateReminders } from './utils/recreateReminders'
 import { getActiveReminders } from './utils/activeReminderObjects'
 
 const app = express()
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(cookieParser())
+
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL as string, process.env.PRODUCTION_URL  as string],
+    origin: [
+      process.env.FRONTEND_URL as string,
+      process.env.PRODUCTION_URL as string,
+    ],
     credentials: true,
   })
 )
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
+
 
 app.use(express.static(path.join(__dirname, '../../frontend/dist')))
 

@@ -237,7 +237,7 @@ const LogIncome = ({ sideBarToggle }: prop) => {
 
             <Button
               type="submit"
-              outline
+              gradientMonochrome={'success'}
               className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 rounded-lg lg:w-[90%] mb-5"
               disabled={isLoading}
             >
