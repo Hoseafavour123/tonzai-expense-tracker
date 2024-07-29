@@ -151,7 +151,7 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <input
-              defaultValue={'income'}
+              defaultValue={'expenses'}
               type="text"
               {...register('type', { required: true })}
               className="md:ml-3 sm:ml-2 mt-3 md:mr-3 sm:mr-2 md:p-2 sm:p-1 bg-gray-100 rounded-lg lg:w-[90%] md:w-[60%]"

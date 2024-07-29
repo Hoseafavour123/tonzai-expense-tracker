@@ -1,10 +1,18 @@
-import { resolveSoa } from 'dns'
 import { Activation } from './pages/Activation'
 import { LoginFormData } from './pages/Login'
 import { TransactionLogForm } from './pages/LogIncome'
 import { RegisterFormData } from './pages/Register'
+import { UpdateFormData } from './pages/Settings'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
+
+export interface UserType {
+  _id: string
+  name: string
+  email: string
+  image: string
+  password: string
+}
 
 export interface TransactionType {
   _id: string
@@ -208,7 +216,6 @@ export const getTotalAmount = async (
       credentials: 'include',
     }
   )
-  console.log(response)
   if (!response.ok) {
     throw new Error('Error fetching Transactions')
   }
@@ -246,18 +253,56 @@ export const deleteTransaction = async (id: string) => {
 }
 
 export const createReminder = async (time: string) => {
-     const response = await fetch(`${API_BASE_URL}/api/v1/reminders/create`, {
-       method: 'POST',
-       credentials: 'include',
-       headers: {
-         'Content-Type': 'application/json',
-       },
-       body: JSON.stringify({ time }),
-     })
-     const body = await response.json()
-     if (!response.ok) {
-       throw new Error('An error occurred')
-     }
+  const response = await fetch(`${API_BASE_URL}/api/v1/reminders/create`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ time }),
+  })
+  const body = await response.json()
+  if (!response.ok) {
+    throw new Error('An error occurred')
+  }
 
-     return body
+  return body
+}
+
+export const UpdateUser = async (formData: FormData): Promise<UserType> => {
+  const response = await fetch(`${API_BASE_URL}/api/v1/users/update`, {
+    method: 'PUT',
+    credentials: 'include',
+    body: formData,
+  })
+  const body = await response.json()
+  if (!response.ok) {
+    throw new Error('error updating user')
+  }
+
+  return body
+}
+
+export const getUser = async (): Promise<UserType> => {
+  const response = await fetch(`${API_BASE_URL}/api/v1/users/me`, {
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    throw new Error('error getting user')
+  }
+  return response.json()
+}
+
+
+export const deleteUser = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/v1/users/delete`, {
+    method: 'DELETE',
+    credentials: 'include'
+  })
+  const body = await response.json()
+  if (!response.ok) {
+    throw new Error(body.message)
+  }
+  return body
 }

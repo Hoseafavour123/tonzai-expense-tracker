@@ -96,7 +96,6 @@ const LogIncome = ({ sideBarToggle }: prop) => {
     formData.append('type', data.type)
     formData.append('category', data.category)
     formData.append('description', data.description)
-    console.log(formData)
     mutate(data)
   }
 

@@ -54,7 +54,6 @@ const Dashboard = ({ sideBarToggle }: prop) => {
         console.log('All good')
       },
       onError: (err: Error) => {
-        console.log(transactionSummary)
         showToast({ message: err.message, type: 'ERROR' })
       },
     }
@@ -62,25 +61,12 @@ const Dashboard = ({ sideBarToggle }: prop) => {
 
   const { data: recentTransactions } = useQuery(
     'fetchRecentTransaction',
-    apiClient.getRecentTransactions,
-    {
-      onSuccess: () => {
-        console.log(recentTransactions)
-      },
-      onError: (err: Error) => {
-        showToast({ message: err.message, type: 'ERROR' })
-      },
-    }
+    apiClient.getRecentTransactions
   )
 
   const { data: topTransactions } = useQuery(
     'getTopTransactions',
-    apiClient.getTopTransactions,
-    {
-      onSuccess: () => {
-        console.log(topTransactions, 'tops')
-      },
-    }
+    apiClient.getTopTransactions
   )
 
   const { data: transactions } = useQuery(

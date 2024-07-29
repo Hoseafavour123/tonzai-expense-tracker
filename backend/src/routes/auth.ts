@@ -123,7 +123,7 @@ router.post(
         // Delete the 'code' cookie
         res.clearCookie('code')
 
-         let newUser = new User({ name, email, password })
+         let newUser = new User({ name, email, password, image: ''})
          newUser = await newUser.save()
 
          const token = jwt.sign(
@@ -135,7 +135,7 @@ router.post(
          )
 
          //schedule income/expense report
-         generateAndSendReport(newUser._id)
+         //generateAndSendReport(newUser._id)
          res.cookie('auth_token', token, {
            httpOnly: true,
            secure: process.env.NODE_ENV === 'production',

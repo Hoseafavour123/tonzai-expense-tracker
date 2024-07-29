@@ -20,7 +20,7 @@ router.post(
     try {
       const user = await User.findById(req.userId).select('-password -createdAt -updatedAt')
 
-      await CronReminder.deleteMany({})
+      await CronReminder.deleteMany({user: req.userId})
       
       const newReminder = await CronReminder.create({
         time: req.body.time,

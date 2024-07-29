@@ -42,7 +42,8 @@ export const startReminderSchedule = ({ newReminder, email, name, time }: StartR
       <br>
       <em>Make wise financial decisions.</em>
       <p>Kind regards.</p>`,
-    })
+    }),
+    {timezone: 'Africa/Lagos'}
   )
   scheduledTask.start()
   addReminderObject(newReminder._id, scheduledTask)
