@@ -124,7 +124,7 @@ const Settings = ({ sideBarToggle }: props) => {
             <Button
               outline
               gradientDuoTone="tealToLime"
-              className="p-0.5"
+              size={'xs'}
               onClick={() => setTime('6:00 pm')}
             >
               6:00 pm
@@ -132,7 +132,7 @@ const Settings = ({ sideBarToggle }: props) => {
             <Button
               outline
               gradientDuoTone="tealToLime"
-              className="p-0.5"
+              size={'xs'}
               onClick={() => setTime('7:00 pm')}
             >
               7:00 pm
@@ -148,7 +148,7 @@ const Settings = ({ sideBarToggle }: props) => {
             <Button
               outline
               gradientDuoTone="tealToLime"
-              className="p-0.5"
+              size={'xs'}
               onClick={() => setTime('9:00 pm')}
             >
               9:00 pm
@@ -195,9 +195,11 @@ const Settings = ({ sideBarToggle }: props) => {
           <form onSubmit={handleSubmit(onSubmit)} className="mb-5 ml-5 mr-5">
             <div className="flex justify-center items-center">
               <div className="  bg-gray-100 backdrop-blur-md md:w-[300px] md:h-[300px] max-lg:w-[200px] max-lg:h-[200px] rounded-full border-2 border-dotted border-gray-300 cursor-pointer mt-5">
-                {isImageUploading && (
+                {/* {isImageUploading && (
                   <FileLoader progress={imageUploadProgress} />
-                )}
+                )} */}
+                
+
                 {!isImageUploading && (
                   <>
                     {!imgURL ? (
@@ -209,7 +211,7 @@ const Settings = ({ sideBarToggle }: props) => {
                         setIsDeleting={setIsDeleting}
                         register={register}
                         watch={watch}
-                        userImg={user?.image}
+                        loading={isImageUploading}
                       />
                     ) : (
                       <div className="relative h-full w-full rounded-full">
@@ -285,6 +287,15 @@ const Settings = ({ sideBarToggle }: props) => {
               {mutation.isLoading ? 'Processing...' : 'Update'}
             </Button>
           </form>
+
+          <div className="p-3">
+            <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3">
+              Danger Zone
+            </h2>
+            <Button gradientMonochrome="failure" size={'xs'} className="">
+              Delete Account
+            </Button>
+          </div>
         </div>
       </div>
     </div>

@@ -14,7 +14,8 @@ type props = {
   setIsDeleting: Dispatch<SetStateAction<boolean>>
   register: UseFormRegister<UpdateFormData>
   watch: UseFormWatch<UpdateFormData>
-  userImg: string | undefined
+  loading: boolean
+
 }
 
 const FileUploader = ({
@@ -25,7 +26,7 @@ const FileUploader = ({
   setIsDeleting,
   register,
   watch,
-  userImg
+  loading
 }: props) => {
 
 const watchFile = watch(`image`)
@@ -66,7 +67,11 @@ useEffect(() => {
             <BiCloudUpload />
           </p>
           <p className="md:text-lg max-lg:text-sm">
-            Upload profile picture
+            {loading ? (
+              <p className="text-xs text-green-500">loading...</p>
+            ) : (
+              <p className='text-xs'>Upload profile picture </p>
+            )}
           </p>
         </div>
       </div>
