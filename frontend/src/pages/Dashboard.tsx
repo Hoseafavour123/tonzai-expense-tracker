@@ -120,13 +120,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
                     transactionSummary.totalIncome) *
                     100
                 ),
-              color: `${
-                transactionSummary &&
-                transactionSummary?.netIncome >
-                  transactionSummary.previousSummary.prevNetIncome
-                  ? 'green'
-                  : 'red'
-              }`,
+              color: `green`,
             }}
           />
         </div>

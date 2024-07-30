@@ -5,6 +5,7 @@ import './index.css'
 
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { AppContextProvider } from './context/AppContext.tsx'
+import { ModalProvider } from './context/ModalContext.tsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,7 +19,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <AppContextProvider>
-        <App />
+        <ModalProvider>
+          <App />
+        </ModalProvider>
       </AppContextProvider>
     </QueryClientProvider>
   </React.StrictMode>

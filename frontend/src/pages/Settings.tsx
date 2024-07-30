@@ -1,15 +1,18 @@
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import * as apiClient from '../api-client'
 import { useAppContext } from '../context/AppContext'
 import { Button, FloatingLabel } from 'flowbite-react'
 import { useState, Dispatch, SetStateAction, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { storage } from '../config/firebase.config'
 import { deleteObject, ref } from 'firebase/storage'
 import FileUploader from '../components/FileUploader'
 import FileLoader from '../components/FileLoader'
 import { FaTimes } from 'react-icons/fa'
+import { HiOutlineExclamationCircle } from 'react-icons/hi'
+import { useModal } from '../context//ModalContext'
+
 
 type props = {
   sideBarToggle: boolean
@@ -37,6 +40,60 @@ const Settings = ({ sideBarToggle }: props) => {
   const [imageUploadProgress, setImageUploadProgress] = useState<number>(0)
   const [imgURL, setImageURL] = useState<string>('')
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
+
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  const { openModal, closeModal } = useModal()
+
+  const logout = useMutation(apiClient.logout, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('validateToken')
+      closeModal()
+      showToast({ message: 'deleted', type: 'SUCCESS' })
+      navigate('/login')
+    },
+    onError: (error: Error) => {
+      showToast({ message: error.message, type: 'ERROR' })
+    },
+  })
+
+  const deleteUser =  useMutation(apiClient.deleteUser, {
+    onSuccess: async () => {
+      logout.mutate()
+      //navigate('/login')
+      //window.location.reload()
+    },
+    onError: (err: Error) => {
+      showToast({ message: err.message, type: 'ERROR' })
+    },
+  })
+
+  const handleDelete = async () => {
+    deleteUser.mutate()
+  }
+
+
+  const showDeleteModal = () => {
+    openModal(
+      <div className="text-center">
+        <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+          Are you sure you want to delete this account?
+        </h3>
+        <div className="flex justify-center gap-4">
+          <Button color="failure" onClick={handleDelete}>
+            Yes, I'm sure
+          </Button>
+          <Button color="gray" onClick={closeModal}>
+            No, cancel
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+
 
   const {
     register,
@@ -183,7 +240,7 @@ const Settings = ({ sideBarToggle }: props) => {
           <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3">
             SMS Reminder (coming soon...)
             <p className="text-xs p-2 max-lg:pl-3">
-              Choose time for daily incomes/expenses logging reminder
+              Choose time for daily incomes/expenses logging reminder (GMT + 1)
             </p>
           </h2>
         </div>
@@ -195,11 +252,12 @@ const Settings = ({ sideBarToggle }: props) => {
           <form onSubmit={handleSubmit(onSubmit)} className="mb-5 ml-5 mr-5">
             <div className="flex justify-center items-center">
               <div className="  bg-gray-100 backdrop-blur-md md:w-[300px] md:h-[300px] max-lg:w-[200px] max-lg:h-[200px] rounded-full border-2 border-dotted border-gray-300 cursor-pointer mt-5">
-                {/* {isImageUploading && (
+              {isImageUploading && (
                   <FileLoader progress={imageUploadProgress} />
-                )} */}
-                
+                )}
 
+          
+                
                 {!isImageUploading && (
                   <>
                     {!imgURL ? (
@@ -211,7 +269,6 @@ const Settings = ({ sideBarToggle }: props) => {
                         setIsDeleting={setIsDeleting}
                         register={register}
                         watch={watch}
-                        loading={isImageUploading}
                       />
                     ) : (
                       <div className="relative h-full w-full rounded-full">
@@ -292,7 +349,7 @@ const Settings = ({ sideBarToggle }: props) => {
             <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3">
               Danger Zone
             </h2>
-            <Button gradientMonochrome="failure" size={'xs'} className="">
+            <Button gradientMonochrome="failure" size={'xs'} className="ml-3" onClick={showDeleteModal}>
               Delete Account
             </Button>
           </div>

@@ -96,7 +96,7 @@ const handleClick = () => {
             className="hover:bg-gray-50 flex items-center gap-2 mt-5 p-1"
           >
             <FaSignOutAlt className="md:h-md:6 w-6 max-lg:w-5 max-lg:h-5" />
-            <Link to={'/logout'}  >Logout</Link>
+            <p>Logout</p>
           </button>
         </ul>
       </div>
