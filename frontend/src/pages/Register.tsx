@@ -47,7 +47,7 @@ const Register = () => {
             </span>
             Expense Tracker
           </Link>
-          <p className="mt-5 text-xl">
+          <p className="mt-5 max-lg:text-sm text-xl">
             <em> Make wiser financial decisions </em>
           </p>
         </div>
@@ -126,7 +126,7 @@ const Register = () => {
             >
               { isLoading ? 'Processing...' : 'Register'}
             </Button>
-            <p className="tex-xl mt-3  mb-5">
+            <p className="tex-xl max-lg:text-sm mt-3  mb-5">
               Already in?{' '}
               <Link to="/login" className="text-blue-500">
                 Login

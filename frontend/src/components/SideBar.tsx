@@ -20,7 +20,6 @@ const SideBar = ({ sideBarToggle, setSideBarToggle }: props) => {
 const mutation = useMutation(apiClient.logout, {
   onSuccess: async () => {
     await queryClient.invalidateQueries('validateToken')
-    showToast({ message: 'Logged Out', type: 'SUCCESS' })
     navigate('/login')
   },
   onError: (error: Error) => {
@@ -36,7 +35,7 @@ const handleClick = () => {
   return (
     <aside
       className={`${
-        sideBarToggle ? '-translate-x-full ' : 'translate-x-0'
+        sideBarToggle ? '-translate-x-full' : 'translate-x-0'
       } min-h-screen bg-white w-[300px] transition-all ease-in-out fixed -mt-3 z-50`}
     >
       <div className="flex flex-col gap-4 p-3">

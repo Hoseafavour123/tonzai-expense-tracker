@@ -128,9 +128,9 @@ const LogIncome = ({ sideBarToggle }: prop) => {
           Total Income:{' '}
           <span className={`text-green-500 font-bold`}>
             {totalAmount && totalAmount?.totalAmount > 0 ? (
-              <>$ {totalAmount?.totalAmount}</>
+              <>{user?.currency} {totalAmount?.totalAmount}</>
             ) : (
-              <>$0</>
+              <>{user?.currency}0</>
             )}
           </span>
         </h1>

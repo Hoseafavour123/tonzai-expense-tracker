@@ -20,6 +20,20 @@ import {
   utilityImg,
 } from './icons'
 
+export const times = [
+  '6:00 pm',
+  '7:00 pm',
+  '8:00 pm',
+  '9:00 pm',
+  '10:00 pm',
+  '11:00 pm',
+  '12:00 am',
+  '6:00 am',
+  '7:00 am',
+  '8:00 am',
+  '9:00 am',
+]
+
 
 type TransactionImgObjType = {
    [key: string]: string

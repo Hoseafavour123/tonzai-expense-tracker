@@ -44,7 +44,7 @@ const Login = () => {
             </span>
             Expense Tracker
           </Link>
-          <p className="md:mt-5 sm:mt-4 text-xl">
+          <p className="md:mt-5 sm:mt-4 max-lg:text-sm text-xl">
             <em> Make wiser financial decisions </em>
           </p>
         </div>
@@ -90,7 +90,7 @@ const Login = () => {
             >
               { isLoading ? 'Processing...' : 'Login'}
             </Button>
-            <p className="tex-xl mt-3 mb-5">
+            <p className="tex-xl max-lg:text-sm mt-3 mb-5">
               Not a member?{' '}
               <Link to="/register" className="text-blue-500">
                 Register

@@ -2,13 +2,13 @@ import { useMutation, useQuery, useQueryClient } from 'react-query'
 import * as apiClient from '../api-client'
 import { useAppContext } from '../context/AppContext'
 import { Button, FloatingLabel, FileInput } from 'flowbite-react'
-import { useState, Dispatch, SetStateAction } from 'react'
+import { useState} from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 import { useModal } from '../context//ModalContext'
-import { profilepic } from '../assets/icons'
 import { currencies } from '../assets/constants..js'
+import { times } from '../assets/constants..js'
 
 type props = {
   sideBarToggle: boolean
@@ -149,104 +149,28 @@ const Settings = ({ sideBarToggle }: props) => {
             {isLoading ? 'Updating' : ''}
           </p>
           <div className="flex flex-wrap gap-4 mt-3 mb-4 p-3 z-0">
-            <Button
-              outline={reminder?.time === '6:00 pm'}
-              gradientDuoTone="tealToLime"
-              size={'xs'}
-              onClick={() => setTime('6:00 pm')}
-            >
-              6:00 pm
-            </Button>
-            <Button
-              outline={reminder?.time === '7:00 pm'}
-              gradientDuoTone="tealToLime"
-              size={'xs'}
-              onClick={() => setTime('7:00 pm')}
-            >
-              7:00 pm
-            </Button>
-            <Button
-              outline={reminder?.time === '8:00 pm'}
-              gradientDuoTone="tealToLime"
-              size={'xs'}
-              className="p-0.5"
-              onClick={() => setTime('8:00 pm')}
-            >
-              8:00 pm
-            </Button>
-            <Button
-              outline={reminder?.time === '9:00 pm'}
-              gradientDuoTone="tealToLime"
-              size={'xs'}
-              onClick={() => setTime('9:00 pm')}
-            >
-              9:00 pm
-            </Button>
-            <Button
-              outline={reminder?.time === '10:00 pm'}
-              gradientDuoTone="tealToLime"
-              size={'xs'}
-              className="p-0.5"
-              onClick={() => setTime('10:00 pm')}
-            >
-              10:00 pm
-            </Button>
-            <Button
-              outline={reminder?.time === '11:00 pm'}
-              gradientDuoTone="tealToLime"
-              size={'xs'}
-              className="p-0.5"
-              onClick={() => setTime('11:00 pm')}
-            >
-              11:00 pm
-            </Button>
-            <Button
-              outline={reminder?.time === '6:00 am'}
-              gradientDuoTone="tealToLime"
-              size={'xs'}
-              className="p-0.5"
-              onClick={() => setTime('6:00 am')}
-            >
-              6:00 am
-            </Button>
-            <Button
-              outline={reminder?.time === '7:00 am'}
-              gradientDuoTone="tealToLime"
-              size={'xs'}
-              className="p-0.5"
-              onClick={() => setTime('7:00 am')}
-            >
-              7:00 am
-            </Button>
-
-            <Button
-              outline={reminder?.time === '8:00 am'}
-              gradientDuoTone="tealToLime"
-              size={'xs'}
-              className="p-0.5"
-              onClick={() => setTime('8:00 am')}
-            >
-              8:00 am
-            </Button>
-            <Button
-              outline={reminder?.time === '9:00 am'}
-              disabled={reminder?.time === '9:00 am'}
-              gradientDuoTone="tealToLime"
-              size={'xs'}
-              className="p-0.5"
-              onClick={() => setTime('9:00 am')}
-            >
-              9:00 am
-            </Button>
+            {times.map((time) => (
+              <button
+                key={time}
+                className={`text-xs py-1 px-2 rounded-md transition-colors ${
+                  reminder?.time === time
+                    ? 'border border-teal-500 text-teal-500'
+                    : 'bg-gradient-to-r from-teal-400 to-lime-500 text-white'
+                }`}
+                onClick={() => setTime(time)}
+              >
+                {time}
+              </button>
+            ))}
           </div>
         </div>
-        <div className="mt-3 col-span-1 md:col-span-2 md:col-start-1 lg:col-start-2 bg-white shadow-md opacity-65">
+        <div className="mt-3 col-span-1 md:col-span-2 md:col-start-1 lg:col-start-2 bg-gray-50 shadow-md">
           <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3">
             SMS Reminder (coming soon...)
-            <p className="text-xs p-2 max-lg:pl-3">
-              Choose time for daily incomes/expenses logging reminder.
-            </p>
           </h2>
+          <p className="text-xs p-2 max-lg:pl-3">
+            Choose time for daily incomes/expenses logging reminder.
+          </p>
         </div>
         <div className="mt-3 col-span-1 md:col-span-2 md:col-start-1 lg:col-start-2 bg-white shadow-md ">
           <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3 mt-3">
