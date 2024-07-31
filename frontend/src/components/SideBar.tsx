@@ -70,14 +70,14 @@ const handleClick = () => {
         </ul>
 
         <div className="border-t-2 hover:bg-gray-50 p-1 mt-5 flex items-center gap-3 cursor-pointer">
-          <Link
+          {/* <Link
             to={'/dashboard/premium'}
             className="flex gap-2"
             onClick={() => window.screen.width < 1024 && setSideBarToggle(!sideBarToggle)}
           >
             <FaCrown className="md:h-6 md:w-6 max-lg:w-5 max-lg:h-5 text-purple-500" />
-            <p className="md:text-xl ">Go Premium</p>
-          </Link>
+            <button disabled className="md:text-xl">Go Premium</button>
+          </Link> */}
         </div>
 
         <ul className="flex flex-col gap-4 md:text-xl border-t-2 mt-5">

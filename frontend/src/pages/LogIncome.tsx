@@ -305,7 +305,7 @@ const LogIncome = ({ sideBarToggle }: prop) => {
                           </div>
                         </div>
 
-                        <div className="flex gap-2 max-lg:mt-5 sm:mt-2 max-lg:ml-2 max-lg:mb-3">
+                        <div className="gap-2 max-lg:mt-5 sm:mt-2 max-lg:ml-2 max-lg:mb-3  hidden">
                           <button className="cursor-pointer md:w-12 md:h-12 sm:w-8 sm:h-8 max-lg:h-5 max-lg:w-5">
                             {' '}
                             <img

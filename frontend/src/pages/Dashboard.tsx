@@ -189,7 +189,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
                       } ml-3 max-lg:text-sm`}
                     >
                       {' '}
-                      {transaction.category} - {transaction.description}- $
+                      {transaction.category} - {transaction.description}- {user?.currency}
                       {transaction.amount}{' '}
                     </small>
                   </li>
