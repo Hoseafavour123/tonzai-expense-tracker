@@ -13,7 +13,7 @@ type props = {
 
 const Header = ({ sideBarToggle, setSideBarToggle }: props) => {
   return (
-    <nav className="fixed top-0 left-0 right-0 container h-16 bg-white flex justify-between items-center shadow-md z-500">
+    <nav className="absolute top-0 left-0 right-0 container h-16 bg-white flex justify-between items-center shadow-md z-500">
       <div className="flex gap-3 items-center cursor-pointer">
         <Link
           to="/"
