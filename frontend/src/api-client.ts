@@ -2,7 +2,7 @@ import { Activation } from './pages/Activation'
 import { LoginFormData } from './pages/Login'
 import { TransactionLogForm } from './pages/LogIncome'
 import { RegisterFormData } from './pages/Register'
-import { UpdateFormData } from './pages/Settings'
+import { Notification } from './context/NotificationContext'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 
@@ -13,6 +13,10 @@ export interface UserType {
   image: { url: string, id: string }
   password: string
   currency: string
+}
+
+export interface Reminder {
+  time: string
 }
 
 export interface TransactionType {
@@ -306,4 +310,41 @@ export const deleteUser = async () => {
     throw new Error(body.message)
   }
   return body
+}
+
+export const getReminder = async (): Promise<Reminder> => {
+  const response = await fetch(`${API_BASE_URL}/api/v1/reminders/get`, {
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    throw new Error('Error fetching reminders')
+  }
+
+  return response.json()
+}
+
+export const getNotification = async (): Promise<Notification[]> => {
+  const response = await fetch(`${API_BASE_URL}/api/v1/notifications`, {
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    throw new Error('Error fetching notifications')
+  }
+
+  return response.json()
+}
+
+export const deleteNotification = async (id: string) => {
+  const response = await fetch(`${API_BASE_URL}/api/v1/notifications/${id}`, {
+    method:'DELETE',
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    throw new Error('Error deleting notifications')
+  }
+
+  return response.json()
 }

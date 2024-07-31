@@ -37,6 +37,8 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
 
   const [page, setPage] = useState<number>(1)
 
+  const {data: user} = useQuery('getUser', apiClient.getUser)
+
   const { data: paginatedTransaction } = useQuery(
     ['getPaginatedTransaction', page],
     () => apiClient.getPaginatedTransaction({ page, type: 'expenses' }),
@@ -257,10 +259,10 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
         paginatedTransaction?.transactions.length > 0 ? (
           <>
             <div
-              className={`col-span-2 row-span-1 w-full h-full bg-white hidden`}
+              className={`col-span-2 row-span-1 w-full h-full bg-white`}
             >
               <h1 className="text-center sm:text-2xl max-lg:text-xl font-bold">
-                Manage
+                Expenses Details
               </h1>
               <div className="flex flex-col gap-5 sm:p-3 max-lg:p-2">
                 {paginatedTransaction?.transactions.map((transaction) => (
@@ -286,11 +288,7 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
 
                             <div className="flex max-lg:flex-col md:flex-row gap-5 max-lg:gap-3 sm:text-sm max-lg:text-xs text-gray-700">
                               <div className="flex gap-1 items-center">
-                                <img
-                                  src={dollarSign}
-                                  className="w-4 h-4"
-                                  alt=""
-                                />
+                               <p>{user?.currency}</p>
                                 <span className="">{transaction.amount} </span>
                               </div>
                               <div className="flex gap-1 items-center">
@@ -318,7 +316,7 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
                           </div>
                         </div>
 
-                        <div className="flex gap-2 max-lg:mt-5 sm:mt-2 max-lg:ml-2 max-lg:mb-3">
+                        <div className="flex gap-2 max-lg:mt-5 sm:mt-2 max-lg:ml-2 max-lg:mb-3 hidden">
                           <button className="cursor-pointer md:w-12 md:h-12 sm:w-8 sm:h-8 max-lg:h-5 max-lg:w-5">
                             {' '}
                             <img

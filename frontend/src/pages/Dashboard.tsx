@@ -230,7 +230,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
                       {transaction.type}
                     </h1>
                     {transaction.topTransactions.map((tran, idx) => (
-                      <p>
+                      <p className='max-lg:text-sm'>
                         {' '}
                         {idx + 1}. {tran.category} - ${tran.amount}{' '}
                       </p>

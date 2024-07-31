@@ -26,9 +26,9 @@ const Settings = ({ sideBarToggle }: props) => {
   const { showToast } = useAppContext()
   const [time, setTime] = useState<string>('')
 
-   const [selectedCurrency, setSelectedCurrency] = useState<string | undefined>(undefined)
-
   const { data: user } = useQuery('getUser', apiClient.getUser)
+  const { data: reminder } = useQuery('getReminder', apiClient.getReminder)
+
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -116,6 +116,7 @@ const Settings = ({ sideBarToggle }: props) => {
           message: `successfully set email reminder`,
           type: 'SUCCESS',
         })
+        window.location.reload()
       },
       onError: (err: Error) => {
         showToast({ message: err.message, type: 'ERROR' })
@@ -149,7 +150,7 @@ const Settings = ({ sideBarToggle }: props) => {
           </p>
           <div className="flex flex-wrap gap-4 mt-3 mb-4 p-3">
             <Button
-              outline
+              outline={reminder?.time === '6:00 pm'}
               gradientDuoTone="tealToLime"
               size={'xs'}
               onClick={() => setTime('6:00 pm')}
@@ -157,7 +158,7 @@ const Settings = ({ sideBarToggle }: props) => {
               6:00 pm
             </Button>
             <Button
-              outline
+              outline={reminder?.time === '7:00 pm'}
               gradientDuoTone="tealToLime"
               size={'xs'}
               onClick={() => setTime('7:00 pm')}
@@ -165,7 +166,7 @@ const Settings = ({ sideBarToggle }: props) => {
               7:00 pm
             </Button>
             <Button
-              outline
+              outline={reminder?.time === '8:00 pm'}
               gradientDuoTone="tealToLime"
               size={'xs'}
               className="p-0.5"
@@ -174,7 +175,7 @@ const Settings = ({ sideBarToggle }: props) => {
               8:00 pm
             </Button>
             <Button
-              outline
+              outline={reminder?.time === '9:00 pm'}
               gradientDuoTone="tealToLime"
               size={'xs'}
               onClick={() => setTime('9:00 pm')}
@@ -182,7 +183,7 @@ const Settings = ({ sideBarToggle }: props) => {
               9:00 pm
             </Button>
             <Button
-              outline
+              outline={reminder?.time === '10:00 pm'}
               gradientDuoTone="tealToLime"
               size={'xs'}
               className="p-0.5"
@@ -191,7 +192,7 @@ const Settings = ({ sideBarToggle }: props) => {
               10:00 pm
             </Button>
             <Button
-              outline
+              outline={reminder?.time === '11:00 pm'}
               gradientDuoTone="tealToLime"
               size={'xs'}
               className="p-0.5"
@@ -200,32 +201,42 @@ const Settings = ({ sideBarToggle }: props) => {
               11:00 pm
             </Button>
             <Button
-              outline
+              outline={reminder?.time === '6:00 am'}
               gradientDuoTone="tealToLime"
               size={'xs'}
               className="p-0.5"
-              onClick={() => setTime('11:00 am')}
+              onClick={() => setTime('6:00 am')}
             >
-              11:00 am
+              6:00 am
             </Button>
             <Button
-              outline
+              outline={reminder?.time === '7:00 am'}
               gradientDuoTone="tealToLime"
               size={'xs'}
               className="p-0.5"
-              onClick={() => setTime('11:30 am')}
+              onClick={() => setTime('7:00 am')}
             >
-              11:30 am
+              7:00 am
             </Button>
 
             <Button
-              outline
+              outline={reminder?.time === '8:00 am'}
               gradientDuoTone="tealToLime"
               size={'xs'}
               className="p-0.5"
-              onClick={() => setTime('10:08 am')}
+              onClick={() => setTime('8:00 am')}
             >
-              10:08 am
+              8:00 am
+            </Button>
+            <Button
+              outline={reminder?.time === '9:00 am'}
+              disabled={reminder?.time === '9:00 am'}
+              gradientDuoTone="tealToLime"
+              size={'xs'}
+              className="p-0.5"
+              onClick={() => setTime('9:00 am')}
+            >
+              9:00 am
             </Button>
           </div>
         </div>
@@ -251,23 +262,15 @@ const Settings = ({ sideBarToggle }: props) => {
                 {...register('currency', { required: false })}
               >
                 {currencies.map((currency) => (
-                  <option key={currency.code} value={currency.symbol} selected={user?.currency === currency.symbol}>
+                  <option
+                    key={currency.code}
+                    value={currency.symbol}
+                    selected={user?.currency === currency.symbol}
+                  >
                     {currency.name} ({currency.symbol})
                   </option>
                 ))}
               </select>
-              {selectedCurrency && (
-                <div>
-                  <p>Selected Currency Code: {selectedCurrency}</p>
-                  <p>
-                    Selected Currency Symbol:{' '}
-                    {
-                      currencies.find((c) => c.code === selectedCurrency)
-                        ?.symbol
-                    }
-                  </p>
-                </div>
-              )}
             </div>
             <div className="mt-5">
               <FloatingLabel

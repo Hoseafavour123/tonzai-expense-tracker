@@ -15,6 +15,7 @@ import {
   royaltiesImg,
   savingsImg,
   socialSecurityImg,
+  subscription,
   transaportationImg,
   utilityImg,
 } from './icons'
@@ -51,6 +52,7 @@ export const IncomeImgObj : TransactionImgObjType = {
 
 
 export const expensesCategories = [
+  'Subscription',
   'Food',
   'Housing',
   'Transportation',
@@ -63,6 +65,7 @@ export const expensesCategories = [
 ]
 
 export const expenseObjImg : TransactionImgObjType= {
+  'Subscription': subscription,
   'Food': foodIcon,
   'Housing': houseImg,
   'Transportation': transaportationImg,

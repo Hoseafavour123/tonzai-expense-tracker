@@ -31,6 +31,7 @@ import deleteIcon from './delete-svgrepo-com.svg'
 import nextIcon from './next-arrow-forward-svgrepo-com.svg'
 import prevIcon from './previous-outline-svgrepo-com.svg'
 import editIcon from './edit-button-svgrepo-com.svg'
+import subscription from './smartphone-svgrepo-com.svg'
 
 
 
@@ -60,6 +61,7 @@ export {
     entertainmentImg,
     utilityImg,
     debtImg,
+    subscription,
 
 
     dateIcon,

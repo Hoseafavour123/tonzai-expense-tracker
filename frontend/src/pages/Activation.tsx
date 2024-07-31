@@ -22,7 +22,6 @@ const Activation = () => {
 
   const { mutate, isLoading } = useMutation(apiClient.activation, {
     onSuccess: async () => {
-      showToast({ message: 'Login successful', type: 'SUCCESS' })
       await queryClient.invalidateQueries('validateToken')
       navigate('/dashboard')
     },
