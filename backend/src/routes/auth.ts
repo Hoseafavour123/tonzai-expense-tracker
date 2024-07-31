@@ -123,7 +123,7 @@ router.post(
         // Delete the 'code' cookie
         res.clearCookie('code')
 
-         let newUser = new User({ name, email, password, image: ''})
+         let newUser = new User({ name, email, password})
          newUser = await newUser.save()
 
          const token = jwt.sign(
@@ -135,7 +135,7 @@ router.post(
          )
 
          //schedule income/expense report
-         //generateAndSendReport(newUser._id)
+         generateAndSendReport(newUser._id)
          res.cookie('auth_token', token, {
            httpOnly: true,
            secure: process.env.NODE_ENV === 'production',
@@ -167,7 +167,7 @@ router.post(
     try {
       const user = await User.findOne({ email })
       if (!user) {
-        return res.status(400).json({ message: 'Invalid credentials' })
+        return res.status(400).json({ message: 'User does not exist.' })
       }
       const isMatch = await bcrypt.compare(password, user.password)
       if (!isMatch) {
@@ -178,7 +178,7 @@ router.post(
         process.env.JWT_SECRET as string,
         { expiresIn: '1d' }
       )
-      //generateAndSendReport(user._id)
+      generateAndSendReport(user._id)
       res.cookie('auth_token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -195,6 +195,7 @@ router.post(
 router.get('/validate-token', verifyToken, (req: Request, res: Response) => {
   res.status(200).send({ userId: req.userId })
 })
+
 
 router.post('/logout', (req: Request, res: Response) => {
   res.cookie('auth_token', '', {

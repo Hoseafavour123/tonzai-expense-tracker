@@ -9,8 +9,16 @@ import reminderRoute from './routes/reminders'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
+import bodyParser from 'body-parser'
 import { recreateReminders } from './utils/recreateReminders'
 import { getActiveReminders } from './utils/activeReminderObjects'
+import { v2 as cloudinary } from 'cloudinary'
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+})
 
 const app = express()
 
@@ -23,10 +31,10 @@ app.use(
     credentials: true,
   })
 )
-
+app.use(cookieParser())
+app.use(bodyParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cookieParser())
 
 
 app.use(express.static(path.join(__dirname, '../../frontend/dist')))

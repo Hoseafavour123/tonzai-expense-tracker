@@ -6,25 +6,23 @@ import multer from 'multer'
 import bcrypt from 'bcryptjs'
 import Transaction from '../models/Transaction'
 import CronReminder from '../models/CronReminder'
+import cloudinary, { UploadApiResponse } from 'cloudinary'
 
-const upload = multer()
+const storage = multer.memoryStorage()
+const upload = multer({ storage })
 
-// Define request and response types for updating user
-interface UpdateUserRequest extends Request {
-  body: {
-    name?: string
-    email?: string
-    image?: string
-    password?: string
-  }
+type UploadResponse = {
+  url?: string
+  id?: string
 }
 
 // Define User interface based on your User model schema
 interface IUser {
   name: string
   email: string
-  image: string
+  image: { url?: string; id?: string }
   password: string
+  currency: string
 }
 
 const router = express.Router()
@@ -53,7 +51,7 @@ router.get('/me', verifyToken, async (req: Request, res: Response) => {
 router.put(
   '/update',
   verifyToken,
-  upload.none(),
+  upload.single('image'),
   async (req: Request, res: Response) => {
     try {
       const updates: Partial<IUser> = {}
@@ -64,10 +62,6 @@ router.put(
 
       if (req.body.email !== undefined && req.body.email.trim() !== '') {
         updates.email = req.body.email
-      }
-
-      if (req.body.image !== undefined && req.body.image.trim() !== '') {
-        updates.image = req.body.image
       }
 
       if (req.body.password !== undefined && req.body.password.trim() !== '') {
@@ -83,15 +77,45 @@ router.put(
         }
       }
 
-     const updatedUser = await User.findByIdAndUpdate(req.userId, updates, {
-       new: true,
-     }).select('-password -__v -createdAt -updatedAt')
+      
+      if (req.body.currency !== undefined && req.body.name.trim() !== '') {
+        updates.currency = req.body.currency
+      }
 
-     if (!updatedUser) {
-       return res.status(404).json({ error: 'User not found' })
-     }
+      if (req.file) {
+        const imageResult: UploadResponse = await new Promise(
+          (resolve, reject) => {
+            const stream = cloudinary.v2.uploader.upload_stream(
+              { resource_type: 'image' },
+              (error, result) => {
+                if (error) reject(error)
+                resolve({
+                  url: result?.secure_url || '',
+                  id: result?.public_id || '',
+                })
+              }
+            )
+            stream.end(req.file?.buffer)
+          }
+        )
+        
+        updates.image = { url: imageResult.url, id: imageResult.id }
 
-     return res.status(200).json(updatedUser)
+        const user = await User.findById(req.userId)
+        if (user?.image.id) {
+          await cloudinary.v2.uploader.destroy(user.image.id)
+        }
+        
+      }
+      const updatedUser = await User.findByIdAndUpdate(req.userId, updates, {
+        new: true,
+      }).select('-password -__v -createdAt -updatedAt')
+
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'User not found' })
+      }
+
+      return res.status(200).json(updatedUser)
     } catch (error) {
       console.log(error)
       return res.status(500).json({ message: 'Something went wrong ' })
@@ -104,7 +128,7 @@ router.delete('/delete', verifyToken, async (req: Request, res: Response) => {
     await Transaction.deleteMany({ user: req.userId })
     await CronReminder.deleteMany({ user: req.userId })
     await User.findByIdAndDelete(req.userId)
-    return res.status(200).json({ message: 'User Deleted!'})
+    return res.status(200).json({ message: 'User Deleted!' })
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: 'Something went wrong' })

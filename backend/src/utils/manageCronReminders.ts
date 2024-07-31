@@ -42,7 +42,7 @@ export const startReminderSchedule = ({ newReminder, email, name, time }: StartR
       <br>
       <em>Make wise financial decisions.</em>
       <p>Kind regards.</p>`,
-    }),
+    }).then(()=> console.log('Send email reminder')).catch((e) => console.log(e)),
     {timezone: 'Africa/Lagos'}
   )
   scheduledTask.start()
