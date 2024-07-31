@@ -18,6 +18,7 @@ import {
   Tooltip,
   ArcElement,
 } from 'chart.js'
+import { userInfo } from 'os'
 
 ChartJS.register(
   CategoryScale,
@@ -37,6 +38,8 @@ type prop = {
 const Dashboard = ({ sideBarToggle }: prop) => {
   const { showToast } = useAppContext()
   const [transactionPeriod, setTransactionPeriod] = useState<string>('weekly')
+
+  const { data: user } = useQuery('getUser', apiClient.getUser)
 
   const [data, setData] = useState<apiClient.AllTransactionType>({
     income: [],
@@ -122,6 +125,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
                 ),
               color: `green`,
             }}
+            currency={user?.currency}
           />
         </div>
 
@@ -144,6 +148,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
                 ),
               color: 'red',
             }}
+            currency={user?.currency}
           />
         </div>
 
@@ -157,6 +162,7 @@ const Dashboard = ({ sideBarToggle }: prop) => {
               percent: transactionSummary && transactionSummary.netIncome / 100,
               color: 'yellow',
             }}
+            currency={user?.currency}
           />
         </div>
 

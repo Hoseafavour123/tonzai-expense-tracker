@@ -12,8 +12,6 @@ import { currencies } from '../assets/constants..js'
 
 type props = {
   sideBarToggle: boolean
-  selectedCurrency: string | undefined
-  setSelectedCurrency: Dispatch<SetStateAction<string | undefined>>
 }
 
 export type UpdateFormData = {
@@ -21,16 +19,14 @@ export type UpdateFormData = {
   name: string
   email: string
   password: string
+  currency: string
 }
 
-const Settings = ({ sideBarToggle, selectedCurrency, setSelectedCurrency }: props) => {
+const Settings = ({ sideBarToggle }: props) => {
   const { showToast } = useAppContext()
   const [time, setTime] = useState<string>('')
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCurrency(event.target.value)
-  }
-  
+   const [selectedCurrency, setSelectedCurrency] = useState<string | undefined>(undefined)
 
   const { data: user } = useQuery('getUser', apiClient.getUser)
   const navigate = useNavigate()
@@ -106,7 +102,7 @@ const Settings = ({ sideBarToggle, selectedCurrency, setSelectedCurrency }: prop
     formData.append('name', data.name)
     formData.append('email', data.email)
     formData.append('password', data.password)
-    formData.append('image', data.image[0])
+    formData.append('currency', data.currency)
     mutation.mutate(formData)
   }
 
@@ -131,7 +127,7 @@ const Settings = ({ sideBarToggle, selectedCurrency, setSelectedCurrency }: prop
     <div
       className={`${
         sideBarToggle ? 'm-5' : 'md:ml-[310px]'
-      } min-h-screen mt-20 mb-20 `}
+      } min-h-screen mt-20 mb-20 z-50 `}
     >
       <div className="py-3 mt-2 w-full bg-white rounded-md shadow-md">
         <h1 className="md:text-2xl sm:text-xl font-bold text-center">
@@ -140,32 +136,8 @@ const Settings = ({ sideBarToggle, selectedCurrency, setSelectedCurrency }: prop
       </div>
       <div className="grid gap-2 mt-5 grid-cols-4 max-lg:grid-cols-1 max-lg:p-2">
         <div className="col-span-1 md:col-span-2 md:col-start-1 lg:col-start-2 bg-white shadow-md">
-          <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3">
-          
-          </h2>
-          <div>
-            <select
-              id="currency-select"
-              value={selectedCurrency}
-              onChange={handleChange}
-            >
-              <option value="">Select a currency</option>
-              {currencies.map((currency) => (
-                <option key={currency.code} value={currency.code}>
-                  {currency.name} ({currency.symbol})
-                </option>
-              ))}
-            </select>
-            {selectedCurrency && (
-              <div>
-                <p>Selected Currency Code: {selectedCurrency}</p>
-                <p>
-                  Selected Currency Symbol:{' '}
-                  {currencies.find((c) => c.code === selectedCurrency)?.symbol}
-                </p>
-              </div>
-            )}
-          </div>
+          <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3"></h2>
+
           <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3">
             Email Reminders
           </h2>
@@ -232,9 +204,18 @@ const Settings = ({ sideBarToggle, selectedCurrency, setSelectedCurrency }: prop
               gradientDuoTone="tealToLime"
               size={'xs'}
               className="p-0.5"
-              onClick={() => setTime('12:00 am')}
+              onClick={() => setTime('11:00 am')}
             >
-              12:00 am
+              11:00 am
+            </Button>
+            <Button
+              outline
+              gradientDuoTone="tealToLime"
+              size={'xs'}
+              className="p-0.5"
+              onClick={() => setTime('11:30 am')}
+            >
+              11:30 am
             </Button>
 
             <Button
@@ -242,18 +223,9 @@ const Settings = ({ sideBarToggle, selectedCurrency, setSelectedCurrency }: prop
               gradientDuoTone="tealToLime"
               size={'xs'}
               className="p-0.5"
-              onClick={() => setTime('6:00 am')}
+              onClick={() => setTime('10:08 am')}
             >
-              6:00 am
-            </Button>
-            <Button
-              outline
-              gradientDuoTone="tealToLime"
-              size={'xs'}
-              className="p-0.5"
-              onClick={() => setTime('3:30 am')}
-            >
-              3:30 am
+              10:08 am
             </Button>
           </div>
         </div>
@@ -271,40 +243,32 @@ const Settings = ({ sideBarToggle, selectedCurrency, setSelectedCurrency }: prop
           </h2>
 
           <form onSubmit={handleSubmit(onSubmit)} className="mb-5 ml-5 mr-5">
-            <div className="flex justify-center items-center">
-              <div className="  bg-gray-100 backdrop-blur-md md:w-[300px] md:h-[300px] max-lg:w-[200px] max-lg:h-[200px] rounded-full border-2 border-dotted border-gray-300 cursor-pointer mt-5">
-                {user?.image?.url ? (
-                  <>
-                    <div className="relative h-full w-full rounded-full">
-                      <img
-                        src={user?.image?.url}
-                        alt="image"
-                        className="w-full h-full object-cover rounded-full z-10"
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex justify-center items-center">
-                      <img
-                        src={profilepic}
-                        alt="image"
-                        className="w-full h-full object-cover rounded-full"
-                      />
-                    </div>
-                  </>
-                )}
-              </div>
+            <div>
+              <p>Select a currency</p>
+              <select
+                id="currency-select"
+                className=" mt-2 p-2 border border-gray-300 rounded-lg w-full"
+                {...register('currency', { required: false })}
+              >
+                {currencies.map((currency) => (
+                  <option key={currency.code} value={currency.symbol} selected={user?.currency === currency.symbol}>
+                    {currency.name} ({currency.symbol})
+                  </option>
+                ))}
+              </select>
+              {selectedCurrency && (
+                <div>
+                  <p>Selected Currency Code: {selectedCurrency}</p>
+                  <p>
+                    Selected Currency Symbol:{' '}
+                    {
+                      currencies.find((c) => c.code === selectedCurrency)
+                        ?.symbol
+                    }
+                  </p>
+                </div>
+              )}
             </div>
-
-            <div className="mb-2 mt-5">
-              <FileInput
-                id="small-file-upload"
-                sizing="xs"
-                {...register('image', { required: false })}
-              />
-            </div>
-
             <div className="mt-5">
               <FloatingLabel
                 type="text"
@@ -345,6 +309,7 @@ const Settings = ({ sideBarToggle, selectedCurrency, setSelectedCurrency }: prop
             </div>
             <Button
               type="submit"
+              size={'sm'}
               outline
               gradientDuoTone="tealToLime"
               className="whitespace-nowrap text-bold text-xl mx-auto w-full mt-4"
@@ -354,7 +319,7 @@ const Settings = ({ sideBarToggle, selectedCurrency, setSelectedCurrency }: prop
             </Button>
           </form>
 
-          <div className="p-3">
+          <div className="p-3 mt-6">
             <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3">
               Danger Zone
             </h2>

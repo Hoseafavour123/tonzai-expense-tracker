@@ -3,10 +3,11 @@ type prop = {
   title: string
   amount: number | undefined
   period: string | undefined
+  currency: string | undefined
   avgDaily?: {percent: number | undefined, color: string}
 }
 
-const Card = ({ iconImg, title, amount, period, avgDaily }: prop) => {
+const Card = ({ iconImg, title, amount, period, avgDaily, currency }: prop) => {
   return (
     <div className="bg-white p-4 shadow-md rounded-md">
       <h1 className="md:text-2xl sm:text-xl text-black mb-2">
@@ -17,7 +18,7 @@ const Card = ({ iconImg, title, amount, period, avgDaily }: prop) => {
           <img src={iconImg.src} alt={iconImg.alt} width={24} height={22} />
         </div>
         <div className="flex flex-col items-center">
-          <h1 className={`md:text-4xl sm:text-3xl text-${avgDaily?.color}-500 font-bold`}>${amount}</h1>
+          <h1 className={`md:text-4xl sm:text-3xl text-${avgDaily?.color}-500 font-bold`}>{currency}{amount}</h1>
           <small className={`text-${avgDaily?.color}-500 font-bold`}> </small>
         </div>
       </div>

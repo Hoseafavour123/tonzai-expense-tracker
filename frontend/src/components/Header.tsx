@@ -13,7 +13,6 @@ type props = {
 
 
 const Header = ({ sideBarToggle, setSideBarToggle }: props) => {
-  const { data: user } = useQuery('getUser', apiClient.getUser)
   const [dropDown, setDropDown] = useState<boolean>(false)
   return (
     <nav className="fixed top-0 left-0 right-0 container h-16 bg-white flex justify-between items-center shadow-md z-500">
@@ -39,7 +38,7 @@ const Header = ({ sideBarToggle, setSideBarToggle }: props) => {
         />
       </div>
       <div className={`flex gap-5 max-lg:gap-2 items-center`}>
-        <div className="p-1 relative cursor-pointer">
+        <div className="p-1 relative cursor-pointer mr-3">
           <img
             src={notification}
             width={25}
@@ -49,7 +48,7 @@ const Header = ({ sideBarToggle, setSideBarToggle }: props) => {
           />{' '}
           <div className="absolute top-1 right-1 w-3 h-3 rounded-full bg-red-500  hover:animate-ping"></div>
         </div>
-        <div className="p-1 relative cursor-pointer border-green-400 max-lg:mr-4">
+        {/* <div className="p-1 relative cursor-pointer border-green-400 max-lg:mr-4">
           <img
             src={`${user?.image?.url ? user?.image?.url : profilepic}`}
             width={25}
@@ -66,7 +65,7 @@ const Header = ({ sideBarToggle, setSideBarToggle }: props) => {
               </ul>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
     </nav>
   )

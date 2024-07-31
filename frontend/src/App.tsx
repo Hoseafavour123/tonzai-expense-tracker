@@ -14,7 +14,7 @@ import Settings from './pages/Settings'
 function App() {
   const { isLoggedIn } = useAppContext()
   const [sideBarToggle, setSideBarToggle] = useState<boolean>(true)
-  const [selectedCurrency, setSelectedCurrency] = useState<string | undefined>(undefined)
+ 
 
   return (
     <BrowserRouter>
@@ -54,7 +54,7 @@ function App() {
         {isLoggedIn && (
           <Route
             path="/dashboard/settings"
-            element={<Settings sideBarToggle={sideBarToggle} selectedCurrency={selectedCurrency} setSelectedCurrency={setSelectedCurrency}/>}
+            element={<Settings sideBarToggle={sideBarToggle}/>}
           />
         )}
 

@@ -12,6 +12,7 @@ export interface UserType {
   email: string
   image: { url: string, id: string }
   password: string
+  currency: string
 }
 
 export interface TransactionType {
