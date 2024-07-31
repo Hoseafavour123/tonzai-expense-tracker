@@ -1,24 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import * as apiClient from '../api-client'
 import { useAppContext } from '../context/AppContext'
-import { Button, FloatingLabel, Label, FileInput } from 'flowbite-react'
+import { Button, FloatingLabel, FileInput } from 'flowbite-react'
 import { useState, Dispatch, SetStateAction } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 import { useModal } from '../context//ModalContext'
 import { profilepic } from '../assets/icons'
-
-import { storage } from '../config/firebase.config.js'
+import { currencies } from '../assets/constants..js'
 
 type props = {
   sideBarToggle: boolean
-}
-
-type deleteProps = {
-  url?: string
-  setIsImageLoading: Dispatch<SetStateAction<boolean>>
-  setImageURL: Dispatch<SetStateAction<string>>
+  selectedCurrency: string | undefined
+  setSelectedCurrency: Dispatch<SetStateAction<string | undefined>>
 }
 
 export type UpdateFormData = {
@@ -28,9 +23,14 @@ export type UpdateFormData = {
   password: string
 }
 
-const Settings = ({ sideBarToggle }: props) => {
+const Settings = ({ sideBarToggle, selectedCurrency, setSelectedCurrency }: props) => {
   const { showToast } = useAppContext()
   const [time, setTime] = useState<string>('')
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCurrency(event.target.value)
+  }
+  
 
   const { data: user } = useQuery('getUser', apiClient.getUser)
   const navigate = useNavigate()
@@ -90,7 +90,6 @@ const Settings = ({ sideBarToggle }: props) => {
     handleSubmit,
   } = useForm<UpdateFormData>()
 
-  
   const mutation = useMutation('updateUser', apiClient.UpdateUser, {
     onSuccess: () => {
       showToast({ message: 'profile updated successfully', type: 'SUCCESS' })
@@ -111,7 +110,6 @@ const Settings = ({ sideBarToggle }: props) => {
     mutation.mutate(formData)
   }
 
-
   const { data, isLoading } = useQuery(
     ['createReminder', time],
     () => apiClient.createReminder(time as string),
@@ -129,7 +127,6 @@ const Settings = ({ sideBarToggle }: props) => {
     }
   )
 
-
   return (
     <div
       className={`${
@@ -143,6 +140,32 @@ const Settings = ({ sideBarToggle }: props) => {
       </div>
       <div className="grid gap-2 mt-5 grid-cols-4 max-lg:grid-cols-1 max-lg:p-2">
         <div className="col-span-1 md:col-span-2 md:col-start-1 lg:col-start-2 bg-white shadow-md">
+          <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3">
+          
+          </h2>
+          <div>
+            <select
+              id="currency-select"
+              value={selectedCurrency}
+              onChange={handleChange}
+            >
+              <option value="">Select a currency</option>
+              {currencies.map((currency) => (
+                <option key={currency.code} value={currency.code}>
+                  {currency.name} ({currency.symbol})
+                </option>
+              ))}
+            </select>
+            {selectedCurrency && (
+              <div>
+                <p>Selected Currency Code: {selectedCurrency}</p>
+                <p>
+                  Selected Currency Symbol:{' '}
+                  {currencies.find((c) => c.code === selectedCurrency)?.symbol}
+                </p>
+              </div>
+            )}
+          </div>
           <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3">
             Email Reminders
           </h2>
@@ -256,7 +279,7 @@ const Settings = ({ sideBarToggle }: props) => {
                       <img
                         src={user?.image?.url}
                         alt="image"
-                        className="w-full h-full object-cover rounded-full"
+                        className="w-full h-full object-cover rounded-full z-10"
                       />
                     </div>
                   </>
@@ -275,7 +298,11 @@ const Settings = ({ sideBarToggle }: props) => {
             </div>
 
             <div className="mb-2 mt-5">
-              <FileInput id="small-file-upload" sizing="xs" />
+              <FileInput
+                id="small-file-upload"
+                sizing="xs"
+                {...register('image', { required: false })}
+              />
             </div>
 
             <div className="mt-5">
