@@ -258,15 +258,12 @@ const Settings = ({ sideBarToggle }: props) => {
               <p>Select a currency</p>
               <select
                 id="currency-select"
+                defaultValue={user?.currency}
                 className=" mt-2 p-2 border border-gray-300 rounded-lg w-full"
                 {...register('currency', { required: false })}
               >
                 {currencies.map((currency) => (
-                  <option
-                    key={currency.code}
-                    value={currency.symbol}
-                    selected={user?.currency === currency.symbol}
-                  >
+                  <option key={currency.code} value={currency.symbol}>
                     {currency.name} ({currency.symbol})
                   </option>
                 ))}
