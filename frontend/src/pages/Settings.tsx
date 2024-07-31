@@ -1,24 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import * as apiClient from '../api-client'
 import { useAppContext } from '../context/AppContext'
-import { Button, FloatingLabel } from 'flowbite-react'
-import { useState, Dispatch, SetStateAction, useEffect } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
-import FileUploader from '../components/FileUploader'
-import FileLoader from '../components/FileLoader'
-import { FaTimes } from 'react-icons/fa'
+import { Button, FloatingLabel, Label, FileInput } from 'flowbite-react'
+import { useState, Dispatch, SetStateAction } from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 import { useModal } from '../context//ModalContext'
 import { profilepic } from '../assets/icons'
 
-import {
-  getDownloadURL,
-  ref,
-  uploadBytesResumable,
-  UploadMetadata,
-  deleteObject,
-} from 'firebase/storage'
 import { storage } from '../config/firebase.config.js'
 
 type props = {
@@ -96,30 +86,15 @@ const Settings = ({ sideBarToggle }: props) => {
 
   const {
     register,
-    watch,
     formState: { errors },
     handleSubmit,
-    setValue,
   } = useForm<UpdateFormData>()
-
-  const deleteFileObject = (
-    url: deleteProps['url'],
-    setImageURL: deleteProps['setImageURL']
-  ) => {
-    if (url) {
-      const deleteRef = ref(storage, url)
-      deleteObject(deleteRef).then(() => {
-        setImageURL('')
-        setValue(`image`, null as any)
-      })
-    }
-  }
 
   
   const mutation = useMutation('updateUser', apiClient.UpdateUser, {
     onSuccess: () => {
       showToast({ message: 'profile updated successfully', type: 'SUCCESS' })
-      //window.location.reload()
+      window.location.reload()
     },
     onError: (err: Error) => {
       showToast({ message: err.message, type: 'ERROR' })
@@ -172,7 +147,7 @@ const Settings = ({ sideBarToggle }: props) => {
             Email Reminders
           </h2>
           <p className="text-xs p-2 max-lg:pl-3">
-            Choose time for daily incomes/expenses logging reminder
+            Choose time for daily incomes/expenses logging reminder (GMT + 1)
           </p>
           <p className="max-lg:pl-3 mt-2 text-center">
             {isLoading ? 'Updating' : ''}
@@ -197,6 +172,7 @@ const Settings = ({ sideBarToggle }: props) => {
             <Button
               outline
               gradientDuoTone="tealToLime"
+              size={'xs'}
               className="p-0.5"
               onClick={() => setTime('8:00 pm')}
             >
@@ -213,6 +189,7 @@ const Settings = ({ sideBarToggle }: props) => {
             <Button
               outline
               gradientDuoTone="tealToLime"
+              size={'xs'}
               className="p-0.5"
               onClick={() => setTime('10:00 pm')}
             >
@@ -221,6 +198,7 @@ const Settings = ({ sideBarToggle }: props) => {
             <Button
               outline
               gradientDuoTone="tealToLime"
+              size={'xs'}
               className="p-0.5"
               onClick={() => setTime('11:00 pm')}
             >
@@ -229,10 +207,30 @@ const Settings = ({ sideBarToggle }: props) => {
             <Button
               outline
               gradientDuoTone="tealToLime"
+              size={'xs'}
               className="p-0.5"
               onClick={() => setTime('12:00 am')}
             >
               12:00 am
+            </Button>
+
+            <Button
+              outline
+              gradientDuoTone="tealToLime"
+              size={'xs'}
+              className="p-0.5"
+              onClick={() => setTime('6:00 am')}
+            >
+              6:00 am
+            </Button>
+            <Button
+              outline
+              gradientDuoTone="tealToLime"
+              size={'xs'}
+              className="p-0.5"
+              onClick={() => setTime('3:30 am')}
+            >
+              3:30 am
             </Button>
           </div>
         </div>
@@ -240,7 +238,7 @@ const Settings = ({ sideBarToggle }: props) => {
           <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3">
             SMS Reminder (coming soon...)
             <p className="text-xs p-2 max-lg:pl-3">
-              Choose time for daily incomes/expenses logging reminder (GMT + 1)
+              Choose time for daily incomes/expenses logging reminder.
             </p>
           </h2>
         </div>
@@ -276,17 +274,8 @@ const Settings = ({ sideBarToggle }: props) => {
               </div>
             </div>
 
-            <div className="flex justify-center items-center mt-5">
-              <label>
-                <input
-                  type="file"
-                  accept={`image/*`}
-                  className={''}
-                  {...register(`image`, {
-                    required: false,
-                  })}
-                />
-              </label>
+            <div className="mb-2 mt-5">
+              <FileInput id="small-file-upload" sizing="xs" />
             </div>
 
             <div className="mt-5">
@@ -296,7 +285,7 @@ const Settings = ({ sideBarToggle }: props) => {
                 defaultValue={user?.name}
                 variant="outlined"
                 {...register('name', {
-                  required: true,
+                  required: false,
                 })}
               />
             </div>
@@ -307,7 +296,7 @@ const Settings = ({ sideBarToggle }: props) => {
                 label="Email"
                 defaultValue={user?.email}
                 variant="outlined"
-                {...register('email', { required: true })}
+                {...register('email', { required: false })}
               />
             </div>
             <div className="mt-5">
