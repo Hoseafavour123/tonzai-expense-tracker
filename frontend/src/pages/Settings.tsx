@@ -148,7 +148,7 @@ const Settings = ({ sideBarToggle }: props) => {
           <p className="max-lg:pl-3 mt-2 text-center">
             {isLoading ? 'Updating' : ''}
           </p>
-          <div className="flex flex-wrap gap-4 mt-3 mb-4 p-3">
+          <div className="flex flex-wrap gap-4 mt-3 mb-4 p-3 z-0">
             <Button
               outline={reminder?.time === '6:00 pm'}
               gradientDuoTone="tealToLime"

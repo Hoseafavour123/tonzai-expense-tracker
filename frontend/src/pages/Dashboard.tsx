@@ -107,8 +107,10 @@ const Dashboard = ({ sideBarToggle }: prop) => {
       <div>
         <h1 className="md:text-3xl mb-3 sm:text-2xl ">Dashboard</h1>
       </div>
+      <h2 className='text-xs m-2 font-light'>A weekly report of your incomes and expenses will be sent to your email...</h2>
 
       <div className="grid lg:grid-cols-5 lg:grid-rows-5 gap-5 text-white sm:grid-cols-1 md:grid-cols-2 items-start ">
+        
         <div className="sm:w-[350px] md:w-full max-lg:mr-3">
           <Card
             amount={transactionSummary?.totalIncome}

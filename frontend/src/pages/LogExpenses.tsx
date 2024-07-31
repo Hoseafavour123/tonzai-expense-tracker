@@ -280,7 +280,7 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
 
                           <div className="flex flex-col gap-2 max-lg:gap-1">
                             <div className="flex items-center md:gap-2 max-lg:gap-1">
-                              <div className="w-2 h-2 bg-green-500  rounded-full"></div>
+                              <div className="w-2 h-2 bg-red-500  rounded-full"></div>
                               <h3 className="sm:text-xl max-lg:text-sm font-bold">
                                 {transaction.category}
                               </h3>
@@ -316,7 +316,7 @@ const LogExpenses = ({ sideBarToggle }: prop) => {
                           </div>
                         </div>
 
-                        <div className="flex gap-2 max-lg:mt-5 sm:mt-2 max-lg:ml-2 max-lg:mb-3 hidden">
+                        <div className="gap-2 max-lg:mt-5 sm:mt-2 max-lg:ml-2 max-lg:mb-3 hidden">
                           <button className="cursor-pointer md:w-12 md:h-12 sm:w-8 sm:h-8 max-lg:h-5 max-lg:w-5">
                             {' '}
                             <img

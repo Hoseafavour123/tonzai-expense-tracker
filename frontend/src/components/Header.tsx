@@ -12,9 +12,6 @@ type props = {
 }
 
 const Header = ({ sideBarToggle, setSideBarToggle }: props) => {
-  const { notifications, deleteNotification } = useNotification()
-  const [dropDown, setDropDown] = useState<boolean>(false)
-  const [alertDropDown, setAlertDropDown] =  useState<boolean>(false)
   return (
     <nav className="fixed top-0 left-0 right-0 container h-16 bg-white flex justify-between items-center shadow-md z-500">
       <div className="flex gap-3 items-center cursor-pointer">
@@ -38,7 +35,7 @@ const Header = ({ sideBarToggle, setSideBarToggle }: props) => {
           }}
         />
       </div>
-      <div className={`flex gap-5 max-lg:gap-2 items-center`}>
+      {/* <div className={`flex gap-5 max-lg:gap-2 items-center`}>
         <div className="p-1 relative cursor-pointer mr-3">
           <img
             src={notification}
@@ -79,7 +76,7 @@ const Header = ({ sideBarToggle, setSideBarToggle }: props) => {
             </>
           )}
         </div>
-        {/* <div className="p-1 relative cursor-pointer border-green-400 max-lg:mr-4">
+        <div className="p-1 relative cursor-pointer border-green-400 max-lg:mr-4">
           <img
             src={`${user?.image?.url ? user?.image?.url : profilepic}`}
             width={25}
@@ -96,8 +93,8 @@ const Header = ({ sideBarToggle, setSideBarToggle }: props) => {
               </ul>
             )}
           </div>
-        </div> */}
-      </div>
+        </div>
+      </div> */}
     </nav>
   )
 }

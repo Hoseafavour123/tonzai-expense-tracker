@@ -14,6 +14,8 @@ import Settings from './pages/Settings'
 function App() {
   const { isLoggedIn } = useAppContext()
   const [sideBarToggle, setSideBarToggle] = useState<boolean>(true)
+
+
  
 
   return (
