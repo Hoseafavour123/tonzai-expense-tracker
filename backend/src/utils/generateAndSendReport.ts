@@ -13,7 +13,7 @@ export const generateAndSendReport = async (
 ) => {
   try {
     cron.schedule(
-      '0 11 * * 3',
+      '10 11 * * 3',
       async () => {
         console.log('generating report')
         const startDate = moment().subtract(7, 'days').startOf('day')
