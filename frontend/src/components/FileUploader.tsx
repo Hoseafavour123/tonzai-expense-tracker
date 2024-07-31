@@ -55,7 +55,7 @@ useEffect(() => {
     )
   }
   setIsDeleting(false)
-}, [watchFile, isDeleting, storage])
+}, [watchFile, isDeleting, storage, isLoading])
 
   return (
     <label>

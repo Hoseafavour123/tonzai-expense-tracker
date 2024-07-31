@@ -51,7 +51,7 @@ const Header = ({ sideBarToggle, setSideBarToggle }: props) => {
         </div>
         <div className="p-1 relative cursor-pointer border-green-400 max-lg:mr-4">
           <img
-            src={`${user?.image ? user?.image : profilepic}`}
+            src={`${user?.image?.url ? user?.image?.url : profilepic}`}
             width={25}
             height={25}
             alt=""

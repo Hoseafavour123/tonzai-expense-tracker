@@ -5,21 +5,28 @@ import { Button, FloatingLabel } from 'flowbite-react'
 import { useState, Dispatch, SetStateAction, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { storage } from '../config/firebase.config'
-import { deleteObject, ref } from 'firebase/storage'
 import FileUploader from '../components/FileUploader'
 import FileLoader from '../components/FileLoader'
 import { FaTimes } from 'react-icons/fa'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 import { useModal } from '../context//ModalContext'
+import { profilepic } from '../assets/icons'
 
+import {
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+  UploadMetadata,
+  deleteObject,
+} from 'firebase/storage'
+import { storage } from '../config/firebase.config.js'
 
 type props = {
   sideBarToggle: boolean
 }
 
 type deleteProps = {
-  url: string
+  url?: string
   setIsImageLoading: Dispatch<SetStateAction<boolean>>
   setImageURL: Dispatch<SetStateAction<string>>
 }
@@ -36,11 +43,6 @@ const Settings = ({ sideBarToggle }: props) => {
   const [time, setTime] = useState<string>('')
 
   const { data: user } = useQuery('getUser', apiClient.getUser)
-  const [isImageUploading, setIsImageUploading] = useState<boolean>(false)
-  const [imageUploadProgress, setImageUploadProgress] = useState<number>(0)
-  const [imgURL, setImageURL] = useState<string>('')
-  const [isDeleting, setIsDeleting] = useState<boolean>(false)
-
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -58,7 +60,7 @@ const Settings = ({ sideBarToggle }: props) => {
     },
   })
 
-  const deleteUser =  useMutation(apiClient.deleteUser, {
+  const deleteUser = useMutation(apiClient.deleteUser, {
     onSuccess: async () => {
       logout.mutate()
       //navigate('/login')
@@ -72,7 +74,6 @@ const Settings = ({ sideBarToggle }: props) => {
   const handleDelete = async () => {
     deleteUser.mutate()
   }
-
 
   const showDeleteModal = () => {
     openModal(
@@ -93,8 +94,6 @@ const Settings = ({ sideBarToggle }: props) => {
     )
   }
 
-
-
   const {
     register,
     watch,
@@ -105,23 +104,22 @@ const Settings = ({ sideBarToggle }: props) => {
 
   const deleteFileObject = (
     url: deleteProps['url'],
-    setIsImageLoading: deleteProps['setIsImageLoading'],
     setImageURL: deleteProps['setImageURL']
   ) => {
-    setIsImageLoading(true)
-    const deleteRef = ref(storage, url)
-    deleteObject(deleteRef).then(() => {
-      setImageURL('')
-      setIsImageLoading(false)
-      setIsDeleting(true)
-      setValue(`image`, null as any)
-    })
+    if (url) {
+      const deleteRef = ref(storage, url)
+      deleteObject(deleteRef).then(() => {
+        setImageURL('')
+        setValue(`image`, null as any)
+      })
+    }
   }
 
+  
   const mutation = useMutation('updateUser', apiClient.UpdateUser, {
     onSuccess: () => {
       showToast({ message: 'profile updated successfully', type: 'SUCCESS' })
-      window.location.reload()
+      //window.location.reload()
     },
     onError: (err: Error) => {
       showToast({ message: err.message, type: 'ERROR' })
@@ -129,14 +127,15 @@ const Settings = ({ sideBarToggle }: props) => {
   })
 
   const onSubmit = (data: UpdateFormData) => {
+    console.log(data.image)
     const formData = new FormData()
     formData.append('name', data.name)
     formData.append('email', data.email)
     formData.append('password', data.password)
-    formData.append('image', imgURL)
-
+    formData.append('image', data.image[0])
     mutation.mutate(formData)
   }
+
 
   const { data, isLoading } = useQuery(
     ['createReminder', time],
@@ -154,6 +153,7 @@ const Settings = ({ sideBarToggle }: props) => {
       },
     }
   )
+
 
   return (
     <div
@@ -252,48 +252,41 @@ const Settings = ({ sideBarToggle }: props) => {
           <form onSubmit={handleSubmit(onSubmit)} className="mb-5 ml-5 mr-5">
             <div className="flex justify-center items-center">
               <div className="  bg-gray-100 backdrop-blur-md md:w-[300px] md:h-[300px] max-lg:w-[200px] max-lg:h-[200px] rounded-full border-2 border-dotted border-gray-300 cursor-pointer mt-5">
-              {isImageUploading && (
-                  <FileLoader progress={imageUploadProgress} />
-                )}
-
-          
-                
-                {!isImageUploading && (
+                {user?.image?.url ? (
                   <>
-                    {!imgURL ? (
-                      <FileUploader
-                        updateState={setImageURL}
-                        setProgress={setImageUploadProgress}
-                        isLoading={setIsImageUploading}
-                        isDeleting={isDeleting}
-                        setIsDeleting={setIsDeleting}
-                        register={register}
-                        watch={watch}
+                    <div className="relative h-full w-full rounded-full">
+                      <img
+                        src={user?.image?.url}
+                        alt="image"
+                        className="w-full h-full object-cover rounded-full"
                       />
-                    ) : (
-                      <div className="relative h-full w-full rounded-full">
-                        <img
-                          src={imgURL}
-                          alt="image"
-                          className="w-full h-full object-cover rounded-full"
-                        />
-                        <button
-                          className="absolute bottom-3 right-3 p-3 rounded-full bg-red-500 text-xl cursor-pointer outline-none border-none hover:shadow-md duration-200 transition-all ease-in-out z-10"
-                          onClick={() => {
-                            deleteFileObject(
-                              imgURL,
-                              setIsImageUploading,
-                              setImageURL
-                            )
-                          }}
-                        >
-                          <FaTimes className="white" />
-                        </button>
-                      </div>
-                    )}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex justify-center items-center">
+                      <img
+                        src={profilepic}
+                        alt="image"
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    </div>
                   </>
                 )}
               </div>
+            </div>
+
+            <div className="flex justify-center items-center mt-5">
+              <label>
+                <input
+                  type="file"
+                  accept={`image/*`}
+                  className={''}
+                  {...register(`image`, {
+                    required: false,
+                  })}
+                />
+              </label>
             </div>
 
             <div className="mt-5">
@@ -349,7 +342,12 @@ const Settings = ({ sideBarToggle }: props) => {
             <h2 className="sm:text-xl max-lg:text-sm p-2 max-lg:pl-3">
               Danger Zone
             </h2>
-            <Button gradientMonochrome="failure" size={'xs'} className="ml-3" onClick={showDeleteModal}>
+            <Button
+              gradientMonochrome="failure"
+              size={'xs'}
+              className="ml-3"
+              onClick={showDeleteModal}
+            >
               Delete Account
             </Button>
           </div>

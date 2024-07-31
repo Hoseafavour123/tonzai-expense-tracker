@@ -10,7 +10,7 @@ export interface UserType {
   _id: string
   name: string
   email: string
-  image: string
+  image: { url: string, id: string }
   password: string
 }
 
